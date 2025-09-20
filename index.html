@@ -34,6 +34,7 @@
     backdrop-filter: blur(12px);
     box-shadow: 0 8px 40px rgba(0,0,0,0.9);
     animation: fadeIn 1s ease;
+    position: relative;
   }
   @keyframes fadeIn { 
     from {opacity:0; transform:translateY(40px);} 
@@ -147,6 +148,28 @@
     box-shadow: 0 0 15px rgba(255,255,255,0.4);
   }
   .reset-all-btn:hover { transform:scale(1.08); box-shadow:0 0 35px #fff; }
+
+  /* لوحة الإدمن */
+  #adminPanel {
+    display:none;
+    position:fixed;
+    top:50%; left:50%;
+    transform:translate(-50%,-50%);
+    background: rgba(0,0,0,0.9);
+    padding:25px;
+    border-radius:15px;
+    z-index:999;
+    color:#fff;
+    max-width:400px;
+    width:90%;
+  }
+  #adminPanel h2 { text-align:center; margin-bottom:15px; }
+  #partsAdminContainer input {
+    width:100%; margin-bottom:5px; padding:8px; border-radius:8px; border:none;
+  }
+  #partsAdminContainer button {
+    width:100%; margin-bottom:10px; padding:8px; border-radius:8px; border:none; background:#00ff6a; color:#000; cursor:pointer;
+  }
 </style>
 </head>
 <body>
@@ -165,10 +188,20 @@
   </div>
 
   <button class="reset-all-btn" id="resetAllBtn">🔄 إعادة كل الأزرار</button>
+  <button class="reset-all-btn" id="adminBtn">🛠️ إدارة الأجزاء</button>
+</div>
+
+<!-- نافذة الإدمن -->
+<div id="adminPanel">
+  <h2>لوحة الإدارة</h2>
+  <div id="partsAdminContainer"></div>
+  <button id="addPartBtn" class="reset-all-btn">➕ إضافة جزء جديد</button>
+  <button id="closeAdminBtn" class="reset-all-btn" style="background:#ff5555;">❌ إغلاق</button>
 </div>
 
 <script>
-const partsData = [
+// جلب البيانات من localStorage أو استخدام الافتراضية
+let partsData = JSON.parse(localStorage.getItem("partsData")) || [
   {id:'part1',name:'ملف اللعبة - جزء 1',size:'9.90 GB',url:'https://example.com/file1.zip'},
   {id:'part2',name:'ملف اللعبة - جزء 2',size:'9.90 GB',url:'https://example.com/file2.zip'},
   {id:'part3',name:'ملف اللعبة - جزء 3',size:'415.82 MB',url:'https://example.com/file3.zip'},
@@ -180,11 +213,22 @@ const container = document.getElementById("partsContainer");
 const allButtons = [];
 let downloadedCount = 0;
 
-partsData.forEach((part, i) => {
+function savePartsData() {
+  localStorage.setItem("partsData", JSON.stringify(partsData));
+}
+
+// عرض الأجزاء في الواجهة
+function refreshPartsUI() {
+  container.innerHTML = '';
+  allButtons.length = 0;
+  downloadedCount = 0;
+  document.getElementById("downloadedCount").textContent = 0;
+  document.getElementById("totalCount").textContent = partsData.length;
+
+  partsData.forEach((part, i) => {
     const partDiv = document.createElement("div");
     partDiv.classList.add("game-item");
     partDiv.style.animationDelay = `${i*0.15}s`;
-
     partDiv.innerHTML = `
       <div class="part-number">${i+1}</div>
       <div class="game-info">
@@ -194,34 +238,78 @@ partsData.forEach((part, i) => {
       <button class="action-btn">تحميل</button>
     `;
     container.appendChild(partDiv);
-
     const downloadBtn = partDiv.querySelector(".action-btn");
     allButtons.push(downloadBtn);
-
     downloadBtn.addEventListener("click", () => {
-        window.open(part.url, "_blank");
-        downloadBtn.innerHTML = `
-          <svg class="check-icon" viewBox="0 0 24 24">
-            <polyline points="20 6 9 17 4 12"></polyline>
-          </svg>
-        `;
-        downloadBtn.disabled = true;
-        downloadedCount++;
-        document.getElementById("downloadedCount").textContent = downloadedCount;
+      window.open(part.url, "_blank");
+      downloadBtn.innerHTML = `
+        <svg class="check-icon" viewBox="0 0 24 24">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      `;
+      downloadBtn.disabled = true;
+      downloadedCount++;
+      document.getElementById("downloadedCount").textContent = downloadedCount;
     });
-});
+  });
+}
 
+// زر إعادة كل الأزرار
 document.getElementById("resetAllBtn").addEventListener("click", () => {
-    allButtons.forEach(btn => {
-        btn.textContent = "تحميل";
-        btn.disabled = false;
-    });
-    downloadedCount = 0;
-    document.getElementById("downloadedCount").textContent = downloadedCount;
+  allButtons.forEach(btn => {
+    btn.textContent = "تحميل";
+    btn.disabled = false;
+  });
+  downloadedCount = 0;
+  document.getElementById("downloadedCount").textContent = downloadedCount;
 });
 
-// init total count
-document.getElementById("totalCount").textContent = partsData.length;
+// --- لوحة الإدارة ---
+const adminBtn = document.getElementById("adminBtn");
+const adminPanel = document.getElementById("adminPanel");
+const partsAdminContainer = document.getElementById("partsAdminContainer");
+const addPartBtn = document.getElementById("addPartBtn");
+const closeAdminBtn = document.getElementById("closeAdminBtn");
+
+adminBtn.addEventListener("click", () => adminPanel.style.display = "block");
+closeAdminBtn.addEventListener("click", () => adminPanel.style.display = "none");
+
+function renderAdminParts() {
+  partsAdminContainer.innerHTML = '';
+  partsData.forEach((part, index) => {
+    const div = document.createElement("div");
+    div.style.marginBottom = "10px";
+    div.innerHTML = `
+      <input type="text" placeholder="اسم الجزء" value="${part.name}">
+      <input type="text" placeholder="حجم الجزء" value="${part.size}">
+      <input type="text" placeholder="رابط التحميل" value="${part.url}">
+      <button>✔ حفظ التغييرات</button>
+    `;
+    partsAdminContainer.appendChild(div);
+    const [nameInput, sizeInput, urlInput, saveBtn] = div.querySelectorAll("input, button");
+    saveBtn.addEventListener("click", () => {
+      part.name = nameInput.value;
+      part.size = sizeInput.value;
+      part.url = urlInput.value;
+      savePartsData();
+      refreshPartsUI();
+      renderAdminParts();
+    });
+  });
+}
+
+// إضافة جزء جديد
+addPartBtn.addEventListener("click", () => {
+  const newPart = {id:`part${partsData.length+1}`, name:'جزء جديد', size:'0 GB', url:'#'};
+  partsData.push(newPart);
+  savePartsData();
+  refreshPartsUI();
+  renderAdminParts();
+});
+
+// تهيئة الصفحة
+refreshPartsUI();
+renderAdminParts();
 </script>
 </body>
 </html>
