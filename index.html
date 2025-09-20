@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>تحميل العاب متعددة الملفات</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700&display=swap" rel="stylesheet">
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
   body {
-    font-family: 'Orbitron', sans-serif;
-    background: linear-gradient(135deg, #0a0a0a, #111, #000);
-    color: #00ff6a;
+    font-family: 'Cairo', sans-serif;
+    background: linear-gradient(135deg, #0a0a0a, #1a1a1a 50%, #000);
+    color: #e6ffe6;
     display:flex;
     justify-content:center;
     align-items:center;
@@ -21,27 +21,35 @@
   .main-container {
     width:100%;
     max-width:900px;
-    background: rgba(0,0,0,0.7);
-    border-radius:25px;
+    background: rgba(0,0,0,0.75);
+    border-radius:20px;
     padding:35px;
-    backdrop-filter: blur(12px);
-    box-shadow: 0 10px 50px rgba(0,255,100,0.5);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.8);
     animation: fadeIn 1s ease;
   }
-  @keyframes fadeIn { from {opacity:0; transform:translateY(30px);} to {opacity:1; transform:translateY(0);} }
+  @keyframes fadeIn { from {opacity:0; transform:translateY(40px);} to {opacity:1; transform:translateY(0);} }
 
   .folder-section { text-align:center; margin-bottom:30px; }
-  .shield-icon { font-size:4rem; animation: pulse 2s infinite; }
-  @keyframes pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.2);} }
+  .flag-icon {
+    font-size:3rem;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    animation: pulse 2s infinite;
+  }
+  .flag-icon span { font-size:1.2rem; }
+  @keyframes pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.15);} }
 
   .folder-title {
-    font-size:2.5rem;
+    font-size:2.3rem;
     margin:15px 0;
-    background: linear-gradient(90deg,#00ff6a,#00b347);
+    background: linear-gradient(90deg,#ff0000,#ffffff,#00ff6a);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
-  .folder-info { font-size:1rem; color:#aaffaa; }
+  .folder-info { font-size:1rem; color:#baffba; }
 
   .files-section { margin:25px 0; }
   .game-item {
@@ -52,50 +60,49 @@
     display:flex; 
     justify-content:space-between; 
     align-items:center;
-    background: rgba(0,0,0,0.5);
+    background: rgba(255,255,255,0.03);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
     overflow:hidden;
+    animation: slideUp 0.7s ease forwards;
+    opacity:0;
   }
-  .game-item:hover { transform:scale(1.03); box-shadow:0 0 25px #00ff6a; }
+  @keyframes slideUp { 
+    from {transform: translateY(40px); opacity:0;}
+    to {transform: translateY(0); opacity:1;}
+  }
+  .game-item:hover { transform:scale(1.02); box-shadow:0 0 20px #00ff6a66; }
 
-  .game-info { display:flex; flex-direction:column; gap:6px; }
-  .game-name { font-weight:700; font-size:1.1rem; }
-  .game-size { font-size:0.95rem; color:#99ff99; }
+  .game-info { display:flex; flex-direction:column; gap:5px; }
+  .game-name { font-weight:700; font-size:1.05rem; }
+  .game-size { font-size:0.9rem; color:#99ff99; }
 
   .part-number {
     position:absolute;
     top:10px; left:10px;
     background:#00ff6a;
     color:#000;
-    font-size:0.9rem;
+    font-size:0.85rem;
     font-weight:bold;
     border-radius:50%;
-    width:28px; height:28px;
+    width:26px; height:26px;
     display:flex; align-items:center; justify-content:center;
-    animation: popIn 0.6s ease;
+    box-shadow:0 0 8px #00ff6a88;
   }
-  @keyframes popIn { from{transform:scale(0);} to{transform:scale(1);} }
 
   .action-btn {
-    position: relative; 
-    padding:15px 40px; 
-    font-size:1.1rem; 
+    padding:15px 38px; 
+    font-size:1rem; 
     font-weight:bold;
     border:none; 
-    border-radius:50px; 
+    border-radius:40px; 
     color:#000;
     background: linear-gradient(90deg,#00ff6a,#00b347);
     cursor:pointer; 
-    overflow:hidden; 
-    display:flex; 
-    align-items:center; 
-    justify-content:center;
-    gap:10px;
     transition:0.3s;
-    box-shadow: 0 0 15px rgba(0,255,100,0.4);
+    box-shadow: 0 0 15px rgba(0,255,100,0.5);
   }
-  .action-btn:hover { transform:scale(1.1); box-shadow:0 0 30px #00ff6a; }
+  .action-btn:hover { transform:scale(1.08); box-shadow:0 0 25px #00ff6a; }
 
   .check-icon {
     width:22px; height:22px;
@@ -110,26 +117,26 @@
 
   .reset-all-btn {
     display:block;
-    margin:25px auto 0 auto;
+    margin:30px auto 0 auto;
     padding:14px 35px;
-    font-size:1.1rem;
+    font-size:1rem;
     font-weight:bold;
     border:none;
     border-radius:15px;
-    background: linear-gradient(90deg,#00ff6a,#00b347);
+    background: linear-gradient(90deg,#ff0000,#ffffff,#00ff6a);
     color:#000;
     cursor:pointer;
     transition:0.3s;
-    box-shadow: 0 0 15px rgba(0,255,100,0.4);
+    box-shadow: 0 0 15px rgba(255,255,255,0.4);
   }
-  .reset-all-btn:hover { transform:scale(1.1); box-shadow:0 0 30px #00ff6a; }
+  .reset-all-btn:hover { transform:scale(1.08); box-shadow:0 0 30px #fff; }
 </style>
 </head>
 <body>
 <div class="main-container">
   <div class="folder-section">
-    <div class="shield-icon">🛡️</div>
-    <h1 class="folder-title">Folder</h1>
+    <div class="flag-icon">🇮🇶 <span>🛡️</span></div>
+    <h1 class="folder-title">ملفات التحميل</h1>
     <div class="folder-info">
       <span class="online-status"><span id="downloadedCount">0</span>/<span id="totalCount">0</span> Online</span>
       <span class="size-info"> | الحجم الكلي: <span id="totalSize">21 GB</span></span>
@@ -145,19 +152,21 @@
 
 <script>
 const partsData = [
-  {id:'part1',name:'EP0082-CUSA23981_00-363779206...',size:'9.90 GB',url:'https://example.com/file1.zip'},
-  {id:'part2',name:'EP0082-CUSA23981_00-363779206...',size:'9.90 GB',url:'https://example.com/file2.zip'},
-  {id:'part3',name:'EP0082-CUSA23981_00-363779206...',size:'415.82 MB',url:'https://example.com/file3.zip'},
-  {id:'part4',name:'EP0082-CUSA23981_00-363779207...',size:'8.50 GB',url:'https://example.com/file4.zip'},
-  {id:'part5',name:'EP0082-CUSA23981_00-363779208...',size:'7.20 GB',url:'https://example.com/file5.zip'},
+  {id:'part1',name:'ملف اللعبة - جزء 1',size:'9.90 GB',url:'https://example.com/file1.zip'},
+  {id:'part2',name:'ملف اللعبة - جزء 2',size:'9.90 GB',url:'https://example.com/file2.zip'},
+  {id:'part3',name:'ملف اللعبة - جزء 3',size:'415.82 MB',url:'https://example.com/file3.zip'},
+  {id:'part4',name:'ملف اللعبة - جزء 4',size:'8.50 GB',url:'https://example.com/file4.zip'},
+  {id:'part5',name:'ملف اللعبة - جزء 5',size:'7.20 GB',url:'https://example.com/file5.zip'},
 ];
 
 const container = document.getElementById("partsContainer");
 const allButtons = [];
+let downloadedCount = 0;
 
 partsData.forEach((part, i) => {
     const partDiv = document.createElement("div");
     partDiv.classList.add("game-item");
+    partDiv.style.animationDelay = `${i*0.15}s`;
 
     partDiv.innerHTML = `
       <div class="part-number">${i+1}</div>
@@ -180,6 +189,9 @@ partsData.forEach((part, i) => {
           </svg>
         `;
         downloadBtn.disabled = true;
+        downloadedCount++;
+        document.getElementById("downloadedCount").textContent = downloadedCount;
+        document.getElementById("totalCount").textContent = partsData.length;
     });
 });
 
@@ -188,7 +200,13 @@ document.getElementById("resetAllBtn").addEventListener("click", () => {
         btn.textContent = "تحميل";
         btn.disabled = false;
     });
+    downloadedCount = 0;
+    document.getElementById("downloadedCount").textContent = downloadedCount;
+    document.getElementById("totalCount").textContent = partsData.length;
 });
+
+// init total count
+document.getElementById("totalCount").textContent = partsData.length;
 </script>
 </body>
 </html>
