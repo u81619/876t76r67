@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>تحميل العاب متعددة الملفات</title>
-<!-- استدعاء خط رهيب -->
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
@@ -29,12 +28,11 @@
     box-shadow: 0 10px 50px rgba(0,255,100,0.5);
     animation: fadeIn 1s ease;
   }
-
   @keyframes fadeIn { from {opacity:0; transform:translateY(30px);} to {opacity:1; transform:translateY(0);} }
 
   .folder-section { text-align:center; margin-bottom:30px; }
   .shield-icon { font-size:4rem; animation: pulse 2s infinite; }
-  @keyframes pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.3);} }
+  @keyframes pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.2);} }
 
   .folder-title {
     font-size:2.5rem;
@@ -43,13 +41,46 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
-
   .folder-info { font-size:1rem; color:#aaffaa; }
+
+  .files-section { margin:25px 0; }
+  .game-item {
+    border: 1px solid rgba(0,255,100,0.3);
+    border-radius:15px;
+    padding:18px;
+    margin-bottom:15px;
+    display:flex; 
+    justify-content:space-between; 
+    align-items:center;
+    background: rgba(0,0,0,0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow:hidden;
+  }
+  .game-item:hover { transform:scale(1.03); box-shadow:0 0 25px #00ff6a; }
+
+  .game-info { display:flex; flex-direction:column; gap:6px; }
+  .game-name { font-weight:700; font-size:1.1rem; }
+  .game-size { font-size:0.95rem; color:#99ff99; }
+
+  .part-number {
+    position:absolute;
+    top:10px; left:10px;
+    background:#00ff6a;
+    color:#000;
+    font-size:0.9rem;
+    font-weight:bold;
+    border-radius:50%;
+    width:28px; height:28px;
+    display:flex; align-items:center; justify-content:center;
+    animation: popIn 0.6s ease;
+  }
+  @keyframes popIn { from{transform:scale(0);} to{transform:scale(1);} }
 
   .action-btn {
     position: relative; 
-    padding:12px 28px; 
-    font-size:1rem; 
+    padding:15px 40px; 
+    font-size:1.1rem; 
     font-weight:bold;
     border:none; 
     border-radius:50px; 
@@ -59,37 +90,29 @@
     overflow:hidden; 
     display:flex; 
     align-items:center; 
+    justify-content:center;
     gap:10px;
     transition:0.3s;
+    box-shadow: 0 0 15px rgba(0,255,100,0.4);
   }
-  .action-btn:hover { transform:scale(1.08); box-shadow:0 0 20px #00ff6a; }
+  .action-btn:hover { transform:scale(1.1); box-shadow:0 0 30px #00ff6a; }
 
-  .files-section { margin:25px 0; }
-  .game-item {
-    border: 1px solid rgba(0,255,100,0.3);
-    border-radius:15px;
-    padding:18px;
-    margin-bottom:15px;
-    display:flex; justify-content:space-between; align-items:center;
-    background: rgba(0,0,0,0.5);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  .check-icon {
+    width:22px; height:22px;
+    stroke:#000;
+    stroke-width:3;
+    fill:none;
+    stroke-dasharray:50;
+    stroke-dashoffset:50;
+    animation: drawCheck 0.6s forwards;
   }
-  .game-item:hover { 
-    transform:scale(1.03); 
-    box-shadow:0 0 25px #00ff6a; 
-  }
-
-  .game-info { display:flex; flex-direction:column; gap:6px; }
-  .game-name { font-weight:700; font-size:1.1rem; }
-  .game-size { font-size:0.95rem; color:#99ff99; }
-
-  .last-check { text-align:center; margin:15px 0; font-size:0.85rem; color:#66ff66; }
+  @keyframes drawCheck { to{stroke-dashoffset:0;} }
 
   .reset-all-btn {
     display:block;
     margin:25px auto 0 auto;
     padding:14px 35px;
-    font-size:1.05rem;
+    font-size:1.1rem;
     font-weight:bold;
     border:none;
     border-radius:15px;
@@ -97,8 +120,9 @@
     color:#000;
     cursor:pointer;
     transition:0.3s;
+    box-shadow: 0 0 15px rgba(0,255,100,0.4);
   }
-  .reset-all-btn:hover { transform:scale(1.08); box-shadow:0 0 25px #00ff6a; }
+  .reset-all-btn:hover { transform:scale(1.1); box-shadow:0 0 30px #00ff6a; }
 </style>
 </head>
 <body>
@@ -117,34 +141,26 @@
   </div>
 
   <button class="reset-all-btn" id="resetAllBtn">إعادة كل الأزرار</button>
+</div>
 
 <script>
 const partsData = [
-    {id:'part1',name:'EP0082-CUSA23981_00-363779206...',size:'9.90 GB',host:'usenet',url:'https://example.com/file1.zip'},
-    {id:'part2',name:'EP0082-CUSA23981_00-363779206...',size:'9.90 GB',host:'usenet',url:'https://example.com/file2.zip'},
-    {id:'part3',name:'EP0082-CUSA23981_00-363779206...',size:'415.82 MB',host:'usenet',url:'https://example.com/file3.zip'},
-    {id:'part4',name:'EP0082-CUSA23981_00-363779207...',size:'8.50 GB',host:'usenet',url:'https://example.com/file4.zip'},
-    {id:'part5',name:'EP0082-CUSA23981_00-363779208...',size:'7.20 GB',host:'usenet',url:'https://example.com/file5.zip'},
-    {id:'part6',name:'EP0082-CUSA23981_00-363779209...',size:'6.80 GB',host:'usenet',url:'https://example.com/file6.zip'},
-    {id:'part7',name:'EP0082-CUSA23981_00-363779210...',size:'5.90 GB',host:'usenet',url:'https://example.com/file7.zip'},
-    {id:'part8',name:'EP0082-CUSA23981_00-363779211...',size:'4.60 GB',host:'usenet',url:'https://example.com/file8.zip'},
-    {id:'part9',name:'EP0082-CUSA23981_00-363779212...',size:'3.70 GB',host:'usenet',url:'https://example.com/file9.zip'},
-    {id:'part10',name:'EP0082-CUSA23981_00-363779213...',size:'2.40 GB',host:'usenet',url:'https://example.com/file10.zip'},
-    {id:'part11',name:'EP0082-CUSA23981_00-363779214...',size:'1.10 GB',host:'usenet',url:'https://example.com/file11.zip'},
-    {id:'part12',name:'EP0082-CUSA23981_00-363779215...',size:'890 MB',host:'usenet',url:'https://example.com/file12.zip'},
-    {id:'part13',name:'EP0082-CUSA23981_00-363779216...',size:'750 MB',host:'usenet',url:'https://example.com/file13.zip'},
-    {id:'part14',name:'EP0082-CUSA23981_00-363779217...',size:'620 MB',host:'usenet',url:'https://example.com/file14.zip'},
-    {id:'part15',name:'EP0082-CUSA23981_00-363779218...',size:'480 MB',host:'usenet',url:'https://example.com/file15.zip'}
+  {id:'part1',name:'EP0082-CUSA23981_00-363779206...',size:'9.90 GB',url:'https://example.com/file1.zip'},
+  {id:'part2',name:'EP0082-CUSA23981_00-363779206...',size:'9.90 GB',url:'https://example.com/file2.zip'},
+  {id:'part3',name:'EP0082-CUSA23981_00-363779206...',size:'415.82 MB',url:'https://example.com/file3.zip'},
+  {id:'part4',name:'EP0082-CUSA23981_00-363779207...',size:'8.50 GB',url:'https://example.com/file4.zip'},
+  {id:'part5',name:'EP0082-CUSA23981_00-363779208...',size:'7.20 GB',url:'https://example.com/file5.zip'},
 ];
 
 const container = document.getElementById("partsContainer");
 const allButtons = [];
 
-partsData.forEach(part => {
+partsData.forEach((part, i) => {
     const partDiv = document.createElement("div");
     partDiv.classList.add("game-item");
 
     partDiv.innerHTML = `
+      <div class="part-number">${i+1}</div>
       <div class="game-info">
         <span class="game-name">${part.name}</span>
         <span class="game-size">${part.size}</span>
@@ -158,7 +174,11 @@ partsData.forEach(part => {
 
     downloadBtn.addEventListener("click", () => {
         window.open(part.url, "_blank");
-        downloadBtn.textContent = "✅";
+        downloadBtn.innerHTML = `
+          <svg class="check-icon" viewBox="0 0 24 24">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        `;
         downloadBtn.disabled = true;
     });
 });
