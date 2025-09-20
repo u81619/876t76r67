@@ -32,35 +32,16 @@
   @keyframes pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.2);} }
   .folder-title { font-size:2rem; margin:10px 0; background:linear-gradient(90deg,#00dbde,#fc00ff); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
   .folder-info { font-size:0.9rem; color:#ccc; }
-  .host-selector { background:#0f3460; border:none; color:#fff; padding:10px 15px; border-radius:10px; font-size:1rem; cursor:pointer; transition:0.3s; }
-  .host-selector:hover { background:#533483; }
-  .quick-download-section { margin:20px 0; display:flex; justify-content:center; }
-  .download-option { display:flex; align-items:center; gap:10px; padding:12px 20px; border-radius:12px; background:linear-gradient(90deg,#ff9966,#ff5e62); cursor:pointer; transition: transform 0.3s ease; }
-  .download-option:hover { transform:scale(1.05); }
-  .main-buttons { margin:25px 0; text-align:center; }
-  .button-row { display:flex; justify-content:center; gap:20px; flex-wrap:wrap; }
-  
-  /* 🔥 GLUE LIQUID BUTTON 🔥 */
+
   .action-btn {
-    position: relative; padding:14px 35px; font-size:1rem; font-weight:bold;
+    position: relative; padding:10px 25px; font-size:0.95rem; font-weight:bold;
     border:none; border-radius:50px; color:#fff;
     background: linear-gradient(90deg,#00c6ff,#0072ff);
-    cursor:pointer; overflow:hidden; display:flex; align-items:center; gap:10px; z-index:1; text-decoration:none;
+    cursor:pointer; overflow:hidden; display:flex; align-items:center; gap:10px;
+    transition:0.3s;
   }
-  .action-btn::before, .action-btn::after {
-    content:""; position:absolute; top:-50%; left:-50%; width:200%; height:200%;
-    background: radial-gradient(circle at 20% 35%, rgba(255,255,255,0.2) 25%, transparent 26%),
-                radial-gradient(circle at 75% 44%, rgba(255,255,255,0.15) 20%, transparent 21%),
-                radial-gradient(circle at 46% 52%, rgba(255,255,255,0.1) 20%, transparent 21%);
-    animation: liquidMove 6s linear infinite; opacity:0.6; z-index:0;
-  }
-  .action-btn::after { animation-delay:-3s; }
-  @keyframes liquidMove { 0%{transform:translate(0,0) rotate(0deg);} 50%{transform:translate(10px,10px) rotate(180deg);} 100%{transform:translate(0,0) rotate(360deg);} }
-  .action-btn:hover { transform:scale(1.07); box-shadow:0 0 20px rgba(0,255,255,0.5);}
-  .action-btn:active { transform:scale(0.92);}
-  .action-btn span { position:relative; z-index:2; }
+  .action-btn:hover { transform:scale(1.05); box-shadow:0 0 15px rgba(0,255,255,0.5); }
 
-  /* ملفات الألعاب */
   .files-section { margin:20px 0; }
   .game-item {
     border: 1px solid rgba(255,255,255,0.2);
@@ -76,17 +57,27 @@
   .game-name { font-weight:bold; }
   .game-size { font-size:0.9rem; color:#ccc; }
   .last-check { text-align:center; margin:15px 0; font-size:0.85rem; color:#bbb; }
-  .settings-section { text-align:center; margin-top:15px; }
-  .reset-btn { padding:10px 20px; border:none; border-radius:12px; background:linear-gradient(90deg,#ff416c,#ff4b2b); color:#fff; cursor:pointer; transition:0.3s; }
-  .reset-btn:hover { transform:scale(1.05); }
+
+  .reset-all-btn {
+    display:block;
+    margin:20px auto 0 auto;
+    padding:12px 30px;
+    font-size:1rem;
+    font-weight:bold;
+    border:none;
+    border-radius:12px;
+    background: linear-gradient(90deg,#ff416c,#ff4b2b);
+    color:#fff;
+    cursor:pointer;
+    transition:0.3s;
+  }
+  .reset-all-btn:hover { transform:scale(1.05); }
 </style>
 </head>
 <body>
 <div class="main-container">
   <div class="folder-section">
-    <div class="folder-icon">
-      <div class="shield-icon">🛡️</div>
-    </div>
+    <div class="shield-icon">🛡️</div>
     <h1 class="folder-title">Folder</h1>
     <div class="folder-info">
       <span class="online-status"><span id="downloadedCount">0</span>/<span id="totalCount">0</span> Online</span>
@@ -94,47 +85,15 @@
     </div>
   </div>
 
-  <div class="options-section">
-    <div class="dropdown-container">
-      <select class="host-selector">
-        <option value="usenet">usenet</option>
-        <option value="rapidgator">rapidgator</option>
-        <option value="uploaded">uploaded</option>
-      </select>
-    </div>
-  </div>
-
-  <div class="quick-download-section">
-    <div class="download-option high-speed">
-      <span class="download-icon">⚡</span>
-      <span class="download-text">تحميل سريع</span>
-    </div>
-  </div>
-
-  <div class="main-buttons">
-    <div class="button-row">
-      <button class="action-btn click-load"><span class="btn-icon">🔗</span><span class="btn-text">Click'n Load</span></button>
-      <button class="action-btn dlc-download"><span class="btn-icon">📥</span><span class="btn-text">dlc</span></button>
-    </div>
-  </div>
-
   <div class="files-section">
     <div class="files-container" id="partsContainer"></div>
   </div>
 
-  <div class="last-check">
-    <span>آخر فحص: <span id="lastCheck">September 20, 2025 10:52am</span></span>
-  </div>
-
-  <div class="settings-section">
-    <button class="reset-btn" id="resetAll">إعادة تعيين الحالة</button>
-  </div>
-</div>
+  <button class="reset-all-btn" id="resetAllBtn">إعادة كل الأزرار</button>
 
 <script>
-  // قائمة الألعاب
-  const partsData = [
-   {
+const partsData = [
+    {
         id: 'part1',
         name: 'EP0082-CUSA23981_00-363779206...',
         size: '9.90 GB',
@@ -240,8 +199,11 @@
         url: 'https://example.com/file15.zip'
     }
 ];
-  const container = document.getElementById("partsContainer");
-  partsData.forEach(part => {
+
+const container = document.getElementById("partsContainer");
+const allButtons = [];
+
+partsData.forEach(part => {
     const partDiv = document.createElement("div");
     partDiv.classList.add("game-item");
 
@@ -250,10 +212,27 @@
         <span class="game-name">${part.name}</span>
         <span class="game-size">${part.size}</span>
       </div>
-      <a href="${part.url}" target="_blank" class="action-btn">تحميل</a>
+      <button class="action-btn">تحميل</button>
     `;
     container.appendChild(partDiv);
-  });
+
+    const downloadBtn = partDiv.querySelector(".action-btn");
+    allButtons.push(downloadBtn);
+
+    downloadBtn.addEventListener("click", () => {
+        window.open(part.url, "_blank"); // يفتح الرابط
+        downloadBtn.textContent = "✅";
+        downloadBtn.disabled = true;
+    });
+});
+
+// زر إعادة كل الأزرار
+document.getElementById("resetAllBtn").addEventListener("click", () => {
+    allButtons.forEach(btn => {
+        btn.textContent = "تحميل";
+        btn.disabled = false;
+    });
+});
 </script>
 </body>
 </html>
