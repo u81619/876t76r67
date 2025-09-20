@@ -155,7 +155,7 @@
     <div class="flag-icon"><span>🇮🇶</span>🕹️</div>
     <h1 class="folder-title">Minecraft</h1>
     <div class="folder-info">
-      <span class="online-status"><span id="downloadedCount">0</span>/<span id="totalCount">0</span> Online</span>
+      <span class="downloads-status">التحميلات: <span id="downloadedCount">0</span>/<span id="totalCount">0</span></span>
       <span class="size-info"> | الحجم الكلي: <span id="totalSize">21 GB</span></span>
     </div>
   </div>
@@ -208,7 +208,6 @@ partsData.forEach((part, i) => {
         downloadBtn.disabled = true;
         downloadedCount++;
         document.getElementById("downloadedCount").textContent = downloadedCount;
-        document.getElementById("totalCount").textContent = partsData.length;
     });
 });
 
@@ -219,7 +218,6 @@ document.getElementById("resetAllBtn").addEventListener("click", () => {
     });
     downloadedCount = 0;
     document.getElementById("downloadedCount").textContent = downloadedCount;
-    document.getElementById("totalCount").textContent = partsData.length;
 });
 
 // init total count
