@@ -1,500 +1,98 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>واجهة تحميل احترافية - تعدد الأجزاء</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>تحميل متعدد الأجزاء</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-/* =====================================================================
-   تصميم عام - Theme: أسود/أخضر احترافي - خطوط عربية - تباين عالي
-   - كل شيء داخل ملف واحد (HTML + CSS + JS)
-   - تعليقات موسعة لسهولة التخصيص
-   ===================================================================== */
-
-/* ---------------------- Reset وتهيئة أساسية -------------------------- */
 :root{
-  --bg-1: #070707;
-  --bg-2: #0f1110;
-  --glass: rgba(255,255,255,0.03);
-  --accent-start: #00ff6a;
-  --accent-end: #00b347;
-  --muted: #9bdba1;
-  --card-border: rgba(0,255,100,0.12);
-  --danger: #ff5858;
-  --glass-2: rgba(255,255,255,0.02);
-  --shadow-1: 0 6px 30px rgba(0,0,0,0.6);
-  --success: #00ff6a;
+  --bg1:#070707;--bg2:#0f1110;--glass:rgba(255,255,255,0.03);
+  --accent1:#00ff6a;--accent2:#00b347;--muted:#9bdba1;
+  --card:rgba(0,255,100,0.12);--danger:#ff5858;--shadow:0 6px 30px rgba(0,0,0,0.6);
 }
-
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%}
-body{
-  font-family: 'Cairo', sans-serif;
-  background: radial-gradient(1200px 600px at 10% 10%, rgba(0,255,110,0.02), transparent 6%),
-              radial-gradient(900px 400px at 90% 90%, rgba(255,255,255,0.01), transparent 6%),
-              linear-gradient(180deg,var(--bg-1),var(--bg-2));
-  color:#eafbe9;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
-  padding:28px;
-  display:flex;
-  justify-content:center;
-  align-items:flex-start;
-  gap:20px;
-  min-height:100vh;
-}
-
-/* ---------------------- الحاوية الرئيسية ----------------------------- */
-.app {
-  width:100%;
-  max-width:1200px;
-  border-radius:16px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-  padding:24px;
-  box-shadow: var(--shadow-1);
-  border: 1px solid rgba(255,255,255,0.02);
-  display:grid;
-  grid-template-columns: 1fr 380px;
-  gap:20px;
-  align-items:start;
-}
-
-/* ---------------------- عمود المحتوى (القوائم) ----------------------- */
-.left-panel{
-  display:flex;
-  flex-direction:column;
-  gap:18px;
-}
-
-/* ---- بطاقة المعلومات العلوية ---- */
-.header-card{
-  border-radius:12px;
-  padding:18px;
-  background: linear-gradient(180deg, rgba(0,0,0,0.45), rgba(255,255,255,0.01));
-  border:1px solid var(--card-border);
-  display:flex;
-  gap:14px;
-  align-items:center;
-  justify-content:space-between;
-}
-.header-left{
-  display:flex;
-  gap:14px;
-  align-items:center;
-}
-.logo{
-  width:72px;height:72px;border-radius:12px;
-  background: linear-gradient(135deg,var(--accent-start),var(--accent-end));
-  display:flex;align-items:center;justify-content:center;
-  font-weight:800;color:#001400;font-size:20px;
-  box-shadow: 0 6px 20px rgba(0,179,71,0.12), inset 0 -6px 14px rgba(255,255,255,0.06);
-}
-.title{
-  display:flex;flex-direction:column;
-}
-.title h2{font-size:18px;font-weight:800;letter-spacing:0.4px}
-.title p{font-size:13px;color:var(--muted);margin-top:6px}
-
-/* ---- ترويسة احصائيات صغيرة ---- */
-.header-right{
-  display:flex;
-  gap:12px;
-  align-items:center;
-}
-.stat{
-  background: rgba(255,255,255,0.02);
-  border-radius:10px;
-  padding:8px 12px;
-  text-align:center;
-  min-width:98px;
-  border:1px solid rgba(255,255,255,0.02);
-}
-.stat small{display:block;color:var(--muted);font-size:12px}
-.stat strong{display:block;font-size:16px;margin-top:4px}
-
-/* ---------------------- قائمة الملفات ------------------------------- */
-.parts-card{
-  border-radius:12px;
-  padding:14px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(0,0,0,0.06));
-  border:1px solid var(--card-border);
-}
-.parts-header{
-  display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;
-}
-.parts-header h3{font-size:16px}
-.parts-controls{display:flex;gap:8px;align-items:center}
-
-/* أزرار التحكم */
-.btn{
-  display:inline-flex;gap:8px;align-items:center;justify-content:center;
-  padding:8px 12px;border-radius:10px;border:none;cursor:pointer;font-weight:700;
-  background:linear-gradient(90deg,var(--accent-start),var(--accent-end));
-  color:#001400;box-shadow: 0 8px 22px rgba(0,179,71,0.12);
-  transition:transform .15s ease,opacity .15s ease;
-}
-.btn.secondary{
-  background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.03);
-  box-shadow:none;font-weight:600;
-}
-.btn.ghost{
-  background:transparent;border:1px dashed rgba(255,255,255,0.03);color:var(--muted)
-}
-.btn:active{transform:translateY(1px)}
-.btn[disabled]{opacity:0.5;cursor:not-allowed}
-
-/* ----- قائمة كل جزء ----- */
-.parts-list{display:flex;flex-direction:column;gap:12px;max-height:60vh;overflow:auto;padding-right:6px}
-.part-item{
-  border-radius:10px;padding:12px;background:var(--glass);
-  border:1px solid rgba(255,255,255,0.02);
-  display:flex;flex-direction:column;gap:10px;position:relative;
-  transition:box-shadow .18s ease, transform .18s ease;
-}
-.part-item:hover{box-shadow:0 10px 30px rgba(0,0,0,0.6);transform:translateY(-3px)}
-
-/* صف الأعلى: اسم/حجم/أزرار */
-.part-top{
-  display:flex;align-items:center;justify-content:space-between;gap:10px;
-}
-.part-meta{display:flex;gap:12px;align-items:center}
-.part-name{font-weight:700;font-size:15px}
-.part-size{font-size:12px;color:var(--muted)}
-
-.part-actions{display:flex;gap:8px;align-items:center}
-/* زر التحميل الفردي */
-.action{
-  padding:8px 14px;border-radius:999px;border:none;background:linear-gradient(90deg,var(--accent-start),var(--accent-end));
-  color:#001400;font-weight:800;cursor:pointer;box-shadow:0 8px 18px rgba(0,179,71,0.12);
-}
-.icon-btn{
-  padding:8px;border-radius:8px;border:none;background:rgba(255,255,255,0.02);color:var(--muted);cursor:pointer
-}
-
-/* ------- شريط التقدم لكل جزء ------- */
-.progress-wrap{display:flex;flex-direction:column;gap:6px}
-.progress-bar{
-  width:100%;height:12px;background:rgba(255,255,255,0.04);border-radius:999px;overflow:hidden;border:1px solid rgba(255,255,255,0.02);
-}
-.progress-fill{
-  width:0%;height:100%;background:linear-gradient(90deg,var(--accent-start),var(--accent-end));
-  border-radius:999px;transition:width .35s cubic-bezier(.2,.9,.2,1);
-  box-shadow: 0 6px 18px rgba(0,179,71,0.08);
-}
-.progress-info{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted)}
-
-/* حالة مكتمل */
-.badge{
-  font-size:12px;padding:6px 8px;border-radius:8px;background:rgba(0,255,100,0.12);color:var(--accent-start);font-weight:700
-}
-
-/* ---------------------- اللوحة اليمنى (ملخص + سجل) ------------------ */
-.right-panel{
-  display:flex;flex-direction:column;gap:16px;
-  position:sticky;top:28px;align-self:start;
-}
-
-/* بطاقة ملخص التقدم الكلي */
-.overview{
-  border-radius:12px;padding:16px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.05));
-  border:1px solid var(--card-border);
-}
-.overview h4{font-size:15px;font-weight:800;margin-bottom:8px}
-.overview .global-progress{height:18px;border-radius:999px;background:rgba(255,255,255,0.03);overflow:hidden;border:1px solid rgba(255,255,255,0.02)}
-.overview .global-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--accent-start),var(--accent-end));transition:width .4s ease}
-
-/* تفاصيل نصية تحت الشريط */
-.overview .meta{display:flex;justify-content:space-between;margin-top:10px;font-size:13px;color:var(--muted)}
-
-/* سجل التنبيهات (Toast-style داخل اللوحة) */
-.log-card{
-  border-radius:12px;padding:12px;min-height:120px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.04));
-  border:1px solid var(--card-border);overflow:auto;max-height:220px;
-}
-.log-entry{font-size:13px;color:var(--muted);padding:8px;border-bottom:1px dashed rgba(255,255,255,0.02)}
-.log-entry strong{color:#cffff0;display:block}
-
-/* زر التنزيلات: قائمة/سريعة */
-.quick-actions{display:flex;gap:10px;flex-direction:column}
-.small{
-  padding:8px 10px;border-radius:10px;font-weight:700;border:none;cursor:pointer;background:transparent;color:var(--muted);
-  border:1px solid rgba(255,255,255,0.02)
-}
-
-/* ---------------------- Toast المطفرة المنبثقة ------------------------ */
-.toast-container{
-  position:fixed;left:20px;bottom:20px;z-index:9999;display:flex;flex-direction:column;gap:10px;align-items:flex-start;
-}
-.toast{
-  padding:10px 14px;border-radius:10px;background:rgba(0,0,0,0.7);color:#e8ffe9;border:1px solid rgba(255,255,255,0.03);
-  box-shadow:0 8px 30px rgba(0,0,0,0.6);min-width:220px;font-weight:700;font-size:13px;
-  display:flex;align-items:center;gap:10px;
-}
-.toast.success{border-left:4px solid var(--success)}
-.toast.warn{border-left:4px solid #ffd166}
-.toast.error{border-left:4px solid var(--danger)}
-
-/* ---------------------- أنيميشنات بسيطة ----------------------------- */
-@keyframes popIn {
-  from {transform:scale(0.98);opacity:0}
-  to {transform:scale(1);opacity:1}
-}
-.part-item{animation:popIn .18s ease both}
-
-/* ---------------------- تصميم متجاوب ------------------------------- */
-@media (max-width:980px){
-  .app{grid-template-columns:1fr; padding:18px;}
-  .right-panel{position:static;top:auto}
-}
-
-/* --------------------------------------------------------------------------------
-   يمكن تعديل المتغيرات بالأعلى لتغيير نظام الألوان وحجم النصوص بسهولة جداً.
-   -------------------------------------------------------------------------------- */
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Cairo',sans-serif;height:100vh;background:linear-gradient(180deg,var(--bg1),var(--bg2));color:#eafbe9;display:flex;justify-content:center;align-items:flex-start;padding:20px;}
+.app{display:grid;grid-template-columns:1fr 380px;gap:20px;width:100%;max-width:1200px;padding:20px;background:rgba(255,255,255,0.02);border-radius:16px;box-shadow:var(--shadow);}
+.left-panel{display:flex;flex-direction:column;gap:16px}
+.header-card,.parts-card,.overview,.log-card{border-radius:12px;padding:16px;background:rgba(255,255,255,0.02);border:1px solid var(--card)}
+.header-card{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.logo{width:64px;height:64px;background:linear-gradient(135deg,var(--accent1),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:800;color:#001400;font-size:18px;border-radius:12px}
+.title h2{font-size:18px;font-weight:800} .title p{font-size:13px;color:var(--muted)}
+.stat{padding:6px 10px;background:rgba(255,255,255,0.02);border-radius:10px;text-align:center;min-width:80px}
+.stat small{display:block;font-size:12px;color:var(--muted)} .stat strong{display:block;margin-top:4px}
+.parts-list{display:flex;flex-direction:column;gap:10px;max-height:50vh;overflow:auto}
+.part-item{padding:10px;background:var(--glass);border-radius:10px;display:flex;flex-direction:column;gap:8px;transition:0.2s}
+.part-top{display:flex;justify-content:space-between;align-items:center}
+.part-actions button,.action{padding:6px 12px;border:none;border-radius:10px;font-weight:700;cursor:pointer}
+.action{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#001400}
+.icon-btn{background:rgba(255,255,255,0.02);color:var(--muted)}
+.progress-bar{width:100%;height:10px;background:rgba(255,255,255,0.04);border-radius:999px;overflow:hidden;border:1px solid rgba(255,255,255,0.02)}
+.progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--accent1),var(--accent2));border-radius:999px;transition:width .3s}
+.right-panel{display:flex;flex-direction:column;gap:12px;position:sticky;top:20px}
+.toast-container{position:fixed;left:20px;bottom:20px;display:flex;flex-direction:column;gap:10px}
+.toast{padding:8px 12px;background:rgba(0,0,0,0.7);color:#e8ffe9;border-radius:10px;font-weight:700;font-size:13px}
+@media(max-width:980px){.app{grid-template-columns:1fr}.right-panel{position:static}}
 </style>
 </head>
 <body>
-<!-- =====================================================================
-     HTML مفصّل: واجهة تحميل متعددة الأجزاء - كل شيء مُدمج
-     - واجهة عربية (RTL)
-     - ملفات أجزاء افتراضية داخل مصفوفة JS في الأسفل
-     ===================================================================== -->
-<div class="app" role="application" aria-label="واجهة تحميل الألعاب">
-  <!-- ------------------------ العمود الأيسر ---------------------------- -->
+<div class="app">
   <div class="left-panel">
-
-    <!-- بطاقة information header -->
-    <div class="header-card" role="region" aria-label="معلومات اللعبة">
-      <div class="header-left">
-        <div class="logo" aria-hidden="true">4G</div>
-        <div class="title">
-          <h2 id="gameTitle">Minecraft - حزمة متعددة الملفات</h2>
-          <p id="gameDesc">تحميل آمن وسهل — يدعم تحميل كل الأجزاء، إيقاف واستئناف محاكاة.</p>
-        </div>
+    <div class="header-card">
+      <div style="display:flex;gap:12px;align-items:center">
+        <div class="logo">4G</div>
+        <div class="title"><h2>Minecraft</h2><p>تحميل آمن وسهل</p></div>
       </div>
-      <div class="header-right" aria-hidden="true">
-        <div class="stat" title="إجمالي الأجزاء">
-          <small>الأجزاء</small>
-          <strong id="totalParts">0</strong>
-        </div>
-        <div class="stat" title="حالة الاكتمال">
-          <small>مكتمل</small>
-          <strong id="completedParts">0</strong>
-        </div>
-        <div class="stat" title="الحجم الكلي">
-          <small>حجم تقريبي</small>
-          <strong id="approxSize">--</strong>
-        </div>
+      <div style="display:flex;gap:8px">
+        <div class="stat"><small>الأجزاء</small><strong id="totalParts">0</strong></div>
+        <div class="stat"><small>مكتمل</small><strong id="completedParts">0</strong></div>
+        <div class="stat"><small>حجم تقريبي</small><strong id="approxSize">--</strong></div>
       </div>
     </div>
 
-    <!-- بطاقة قائمة الأجزاء -->
-    <section class="parts-card" aria-label="قائمة الأجزاء">
-      <div class="parts-header">
+    <section class="parts-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
         <h3>الأجزاء المتاحة</h3>
-        <div class="parts-controls">
-          <button class="btn" id="downloadAllBtn" title="تحميل كل الأجزاء">تحميل الكل</button>
-          <button class="btn secondary" id="pauseAllBtn" title="إيقاف/استئناف التحميلات">إيقاف/استئناف</button>
-          <button class="btn ghost" id="clearCompletedBtn" title="إعادة تعيين المكتمل">إعادة تعيين المكتمل</button>
+        <div style="display:flex;gap:6px">
+          <button class="action" id="downloadAllBtn">تحميل الكل</button>
+          <button class="icon-btn" id="pauseAllBtn">إيقاف/استئناف</button>
+          <button class="icon-btn" id="clearCompletedBtn">إعادة تعيين المكتمل</button>
         </div>
       </div>
-
-      <div class="parts-list" id="partsList" role="list" aria-label="قائمة الملفات">
-        <!-- عناصر الأجزاء تُولَّد ديناميكياً -->
-      </div>
+      <div class="parts-list" id="partsList"></div>
     </section>
-
-    <!-- بطاقة السجل أو التفاصيل الموسعة -->
-    <section class="parts-card" aria-label="تفاصيل إضافية">
-      <h3>تفاصيل إضافية وإعدادات</h3>
-      <div style="display:flex;gap:12px;margin-top:10px;flex-wrap:wrap">
-        <button class="small" id="toggleSimulateBtn">تشغيل محاكاة التحميل: <strong id="simulateState">تشغيل</strong></button>
-        <button class="small" id="infoBtn">معلومات حول الحزمة</button>
-        <button class="small" id="copyLinksBtn">نسخ روابط الأجزاء</button>
-      </div>
-
-      <div style="margin-top:12px;color:var(--muted);font-size:13px">
-        ملاحظة: هذه الواجهة تقوم بمحاكاة تقدم التحميل محلياً لعرض الشريط والنسب. عند استخدام روابط حقيقية، المتصفح سيفتح رابط الملف في نافذة جديدة.
-      </div>
-    </section>
-
   </div>
 
-  <!-- ------------------------ العمود الأيمن ---------------------------- -->
-  <aside class="right-panel" aria-label="ملخص التقدم">
-    <div class="overview" role="region" aria-label="الملخص العام">
+  <aside class="right-panel">
+    <div class="overview">
       <h4>التقدم العام</h4>
-      <div class="global-progress" aria-hidden="true"><div class="global-fill" id="globalFill"></div></div>
-      <div class="meta" style="margin-top:10px">
+      <div class="progress-bar"><div class="progress-fill" id="globalFill"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:13px;margin-top:6px">
         <div>نسبة الاكتمال: <strong id="globalPercent">0%</strong></div>
         <div>المكتمل: <strong id="completedCount">0</strong>/<strong id="totalCount">0</strong></div>
       </div>
     </div>
-
-    <div class="log-card" id="logCard" aria-live="polite">
-      <div style="font-weight:800;margin-bottom:8px">سجل النشاط</div>
-      <div id="logList">
-        <!-- سجلات التنبيهات تظهر هنا -->
-      </div>
-    </div>
-
-    <div class="quick-actions">
-      <button class="small" id="downloadSelectedBtn">تحميل المحدد</button>
-      <button class="small" id="exportReportBtn">تصدير تقرير التقدم</button>
-    </div>
+    <div class="log-card" id="logCard"></div>
   </aside>
 </div>
+<div class="toast-container" id="toastContainer"></div>
 
-<!-- Toast container -->
-<div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
-
-<!-- =====================================================================
-     JavaScript: توليد القائمة، إدارة تقدم كل جزء، التقدم العام، توستات،
-     وظائف: تحميل فردي، تحميل الكل، إيقاف/استئناف، محاكاة التقدم.
-     تعليمات داخل الكود باللغة العربية لتسهيل التعديل.
-     ===================================================================== -->
 <script>
-/* ===========================================================
-   ملاحظة مهمة:
-   - هذا النظام يقوم بـ "محاكاة" تقدم التحميل محلياً داخل الصفحة.
-   - عند الضغط على زر تحميل جزء، يتم فتح رابط الملف (إذا كان رابطاً حقيقياً)
-     وفي نفس الوقت يبدأ شريط التقدم المحاكى. هذا يمنع محاولة التحكم
-     بعملية تحميل المتصفح الحقيقية (التي غير ممكنة من JavaScript عادي).
-   - يمكنك ربط روابط حقيقية داخل مصفوفة partsData أسفل.
-   =========================================================== */
-
-/* ---------------------- بيانات الأجزاء (قابلة للتعديل) ----------------
-   كل عنصر: { id, name, sizeDisplay, sizeBytes (اختياري لو تريد حساب الحجم الكلي),
-               url (رابط التحميل)، simulateSpeed (ms لو أردت اختلاف السرعة) }
-   --------------------------------------------------------------------- */
-const partsData = [
-  {id:'p1', name:'ملف اللعبة - الجزء 01', sizeDisplay:'9.90 GB', sizeBytes: 9900*1024*1024, url:'https://example.com/file1.zip', simulateSpeed:220},
-  {id:'p2', name:'ملف اللعبة - الجزء 02', sizeDisplay:'9.90 GB', sizeBytes: 9900*1024*1024, url:'https://example.com/file2.zip', simulateSpeed:210},
-  {id:'p3', name:'ملف اللعبة - الجزء 03', sizeDisplay:'415.82 MB', sizeBytes: 415.82*1024*1024, url:'https://example.com/file3.zip', simulateSpeed:160},
-  {id:'p4', name:'ملف اللعبة - الجزء 04', sizeDisplay:'8.50 GB', sizeBytes: 8500*1024*1024, url:'https://example.com/file4.zip', simulateSpeed:200},
-  {id:'p5', name:'ملف اللعبة - الجزء 05', sizeDisplay:'7.20 GB', sizeBytes: 7200*1024*1024, url:'https://example.com/file5.zip', simulateSpeed:180}
+const partsData=[
+{id:'part1',name:'الجزء الأول',sizeDisplay:'20 GB',url:'#'},
+{id:'part2',name:'الجزء الثاني',sizeDisplay:'20 GB',url:'#'},
+{id:'part3',name:'الجزء الثالث',sizeDisplay:'3.12 GB',url:'#'}
 ];
-
-/* ---------------------- حالة النظام العامة ---------------------- */
-let state = {
-  parts: {},           // سيحوي كائنات الحالة لكل جزء
-  totalBytes: 0,       // مجموع الحجم (تقديري)
-  simulate: true,      // هل نعمل محاكاة فعلاً أم لا
-  paused: false,       // هل النظام مُوقف (pause all)
-  downloadingAll: false
-};
-
-/* ---------------------- عناصر DOM الأساسية ---------------------- */
-const partsListEl = document.getElementById('partsList');
-const totalPartsEl = document.getElementById('totalParts');
-const approxSizeEl = document.getElementById('approxSize');
-const completedPartsEl = document.getElementById('completedParts');
-const totalCountEl = document.getElementById('totalCount');
-const completedCountEl = document.getElementById('completedCount');
-const globalFillEl = document.getElementById('globalFill');
-const globalPercentEl = document.getElementById('globalPercent');
-const logListEl = document.getElementById('logList');
-const toastContainer = document.getElementById('toastContainer');
-const simulateStateEl = document.getElementById('simulateState');
-
-/* أزرار */
-const downloadAllBtn = document.getElementById('downloadAllBtn');
-const pauseAllBtn = document.getElementById('pauseAllBtn');
-const clearCompletedBtn = document.getElementById('clearCompletedBtn');
-const toggleSimulateBtn = document.getElementById('toggleSimulateBtn');
-const copyLinksBtn = document.getElementById('copyLinksBtn');
-const downloadSelectedBtn = document.getElementById('downloadSelectedBtn');
-const exportReportBtn = document.getElementById('exportReportBtn');
-const infoBtn = document.getElementById('infoBtn');
-
-/* ---------------------- مساعدات تنسيق وحساب ---------------------- */
-function formatBytes(bytes){
-  if(!bytes && bytes !== 0) return '--';
-  const sizes = ['B','KB','MB','GB','TB'];
-  if(bytes === 0) return '0 B';
-  const i = Math.floor(Math.log(bytes)/Math.log(1024));
-  return parseFloat((bytes/Math.pow(1024,i)).toFixed(2)) + ' ' + sizes[i];
-}
-
-/* ---------------------- تهيئة بيانات الحالة لكل جزء ---------------------- */
-function initState(){
-  state.totalBytes = 0;
-  partsData.forEach((p, idx) => {
-    state.totalBytes += (p.sizeBytes || 0);
-    state.parts[p.id] = {
-      ...p,
-      index: idx,
-      percent: 0,
-      status: 'idle', // idle, downloading, paused, completed, error
-      intervalId: null,
-      startTime: null,
-      elapsed: 0,
-      selected: false
-    };
-  });
-  totalPartsEl.textContent = partsData.length;
-  totalCountEl.textContent = partsData.length;
-  approxSizeEl.textContent = formatBytes(state.totalBytes);
-  updateSummary();
-}
-
-/* ---------------------- إنشاء عناصر DOM لكل جزء ---------------------- */
-function renderParts(){
-  partsListEl.innerHTML = '';
-  partsData.forEach(p => {
-    const s = state.parts[p.id];
-
-    const item = document.createElement('div');
-    item.className = 'part-item';
-    item.setAttribute('data-id', p.id);
-    item.setAttribute('role','listitem');
-
-    item.innerHTML = `
-      <div class="part-top">
-        <div class="part-meta">
-          <div style="display:flex;flex-direction:column">
-            <span class="part-name">${p.name}</span>
-            <span class="part-size">${p.sizeDisplay}</span>
-          </div>
-        </div>
-
-        <div class="part-actions">
-          <button class="icon-btn" title="اختيار" aria-label="اختيار" data-action="toggleSelect">◻</button>
-          <button class="action" data-action="download">تحميل</button>
-          <button class="icon-btn" title="معلومات" data-action="info">i</button>
-        </div>
-      </div>
-
-      <div class="progress-wrap" aria-hidden="false">
-        <div class="progress-bar" aria-hidden="true"><div class="progress-fill" style="width:0%"></div></div>
-        <div class="progress-info">
-          <div class="left-info"><span class="status-label">جاهز</span></div>
-          <div class="right-info"><small class="percent-text">0%</small></div>
-        </div>
-      </div>
-    `;
-
-    // ربط الأحداث الفردية للأزرار
-    const downloadBtn = item.querySelector('[data-action="download"]');
-    const infoBtnLocal = item.querySelector('[data-action="info"]');
-    const selectBtn = item.querySelector('[data-action="toggleSelect"]');
-
-    downloadBtn.addEventListener('click', () => toggleDownload(p.id));
-    infoBtnLocal.addEventListener('click', () => showInfo(p.id));
-    selectBtn.addEventListener('click', () => toggleSelect(p.id, selectBtn));
-
-    partsListEl.appendChild(item);
-
-    // حفظ مرجع العنصر في الحالة
-    s.dom = {
-      root: item,
-      progressFill: item.querySelector('.progress-fill'),
-      percentText: item.querySelector('.percent-text'),
-      statusLabel: item.querySelector('.status-label'),
-      downloadBtn,
-      selectBtn
-    };
-  });
-}
-
-/* ---------------------- تحديث الملخص العام --------
+let state={parts:{},totalBytes:0,simulate:true,paused:false};
+const partsListEl=document.getElementById('partsList'),totalPartsEl=document.getElementById('totalParts'),completedPartsEl=document.getElementById('completedParts'),approxSizeEl=document.getElementById('approxSize'),globalFillEl=document.getElementById('globalFill'),globalPercentEl=document.getElementById('globalPercent');
+function initState(){partsData.forEach((p,i)=>{state.parts[p.id]={...p,percent:0,status:'idle'}});
+totalPartsEl.textContent=partsData.length;completedPartsEl.textContent=0;approxSizeEl.textContent='--'}
+function renderParts(){partsListEl.innerHTML='';partsData.forEach(p=>{const item=document.createElement('div');item.className='part-item';
+item.innerHTML=`<div class="part-top"><div><span>${p.name}</span> <small>${p.sizeDisplay}</small></div>
+<div class="part-actions"><button class="icon-btn">◻</button><button class="action">تحميل</button></div></div>
+<div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>`;
+partsListEl.appendChild(item);});}
+initState();renderParts();
+</script>
+</body>
+</html>
