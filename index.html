@@ -9,7 +9,9 @@
   * { margin:0; padding:0; box-sizing:border-box; }
   body {
     font-family: 'Cairo', sans-serif;
-    background: linear-gradient(135deg, #0a0a0a, #1a1a1a 50%, #000);
+    background: linear-gradient(135deg, #0a0a0a, #1a1a1a, #0a0a0a);
+    background-size: 300% 300%;
+    animation: gradientBG 8s ease infinite;
     color: #e6ffe6;
     display:flex;
     justify-content:center;
@@ -17,18 +19,26 @@
     min-height:100vh;
     padding:20px;
   }
+  @keyframes gradientBG {
+    0% {background-position:0% 50%;}
+    50% {background-position:100% 50%;}
+    100% {background-position:0% 50%;}
+  }
 
   .main-container {
     width:100%;
     max-width:900px;
-    background: rgba(0,0,0,0.75);
+    background: rgba(0,0,0,0.8);
     border-radius:20px;
     padding:35px;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.8);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.9);
     animation: fadeIn 1s ease;
   }
-  @keyframes fadeIn { from {opacity:0; transform:translateY(40px);} to {opacity:1; transform:translateY(0);} }
+  @keyframes fadeIn { 
+    from {opacity:0; transform:translateY(40px);} 
+    to {opacity:1; transform:translateY(0);} 
+  }
 
   .folder-section { text-align:center; margin-bottom:30px; }
   .flag-icon {
@@ -39,8 +49,10 @@
     gap:10px;
     animation: pulse 2s infinite;
   }
-  .flag-icon span { font-size:1.2rem; }
-  @keyframes pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.15);} }
+  @keyframes pulse { 
+    0%,100%{transform:scale(1);} 
+    50%{transform:scale(1.2);} 
+  }
 
   .folder-title {
     font-size:2.3rem;
@@ -49,18 +61,22 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
-  .folder-info { font-size:1rem; color:#baffba; }
+  .folder-info {
+    font-size:1rem; 
+    color:#baffba; 
+    margin-top:5px;
+  }
 
   .files-section { margin:25px 0; }
   .game-item {
-    border: 1px solid rgba(0,255,100,0.3);
+    border: 1px solid rgba(0,255,100,0.25);
     border-radius:15px;
     padding:18px;
     margin-bottom:15px;
     display:flex; 
     justify-content:space-between; 
     align-items:center;
-    background: rgba(255,255,255,0.03);
+    background: rgba(255,255,255,0.04);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
     overflow:hidden;
@@ -71,7 +87,7 @@
     from {transform: translateY(40px); opacity:0;}
     to {transform: translateY(0); opacity:1;}
   }
-  .game-item:hover { transform:scale(1.02); box-shadow:0 0 20px #00ff6a66; }
+  .game-item:hover { transform:scale(1.02); box-shadow:0 0 25px #00ff6a55; }
 
   .game-info { display:flex; flex-direction:column; gap:5px; }
   .game-name { font-weight:700; font-size:1.05rem; }
@@ -87,11 +103,11 @@
     border-radius:50%;
     width:26px; height:26px;
     display:flex; align-items:center; justify-content:center;
-    box-shadow:0 0 8px #00ff6a88;
+    box-shadow:0 0 10px #00ff6a88;
   }
 
   .action-btn {
-    padding:15px 38px; 
+    padding:13px 35px; 
     font-size:1rem; 
     font-weight:bold;
     border:none; 
@@ -99,10 +115,11 @@
     color:#000;
     background: linear-gradient(90deg,#00ff6a,#00b347);
     cursor:pointer; 
-    transition:0.3s;
+    transition:0.25s;
     box-shadow: 0 0 15px rgba(0,255,100,0.5);
   }
-  .action-btn:hover { transform:scale(1.08); box-shadow:0 0 25px #00ff6a; }
+  .action-btn:hover { transform:scale(1.08); box-shadow:0 0 30px #00ff6a; }
+  .action-btn:disabled {opacity:0.8; cursor:not-allowed;}
 
   .check-icon {
     width:22px; height:22px;
@@ -129,13 +146,13 @@
     transition:0.3s;
     box-shadow: 0 0 15px rgba(255,255,255,0.4);
   }
-  .reset-all-btn:hover { transform:scale(1.08); box-shadow:0 0 30px #fff; }
+  .reset-all-btn:hover { transform:scale(1.08); box-shadow:0 0 35px #fff; }
 </style>
 </head>
 <body>
 <div class="main-container">
   <div class="folder-section">
-    <div class="flag-icon"><span>🛡️</span></div>
+    <div class="flag-icon"><span>🇮🇶</span>🕹️</div>
     <h1 class="folder-title">Minecraft</h1>
     <div class="folder-info">
       <span class="online-status"><span id="downloadedCount">0</span>/<span id="totalCount">0</span> Online</span>
@@ -147,7 +164,7 @@
     <div class="files-container" id="partsContainer"></div>
   </div>
 
-  <button class="reset-all-btn" id="resetAllBtn">إعادة كل الأزرار</button>
+  <button class="reset-all-btn" id="resetAllBtn">🔄 إعادة كل الأزرار</button>
 </div>
 
 <script>
