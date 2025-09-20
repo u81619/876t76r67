@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تحميل الملفات المتعددة</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "Cairo", sans-serif;
+      background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .main-container {
+      width: 100%;
+      max-width: 800px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 20px;
+      padding: 30px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      animation: fadeIn 1.2s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    .folder-section { text-align: center; margin-bottom: 25px; }
+    .shield-icon { font-size: 3rem; animation: pulse 2s infinite; }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1);}
+      50% { transform: scale(1.2);}
+    }
+    .folder-title {
+      font-size: 2rem; margin: 10px 0;
+      background: linear-gradient(90deg,#00dbde,#fc00ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .folder-info { font-size: 0.9rem; color: #ccc; }
+    .host-selector {
+      background: #0f3460; border: none; color: #fff;
+      padding: 10px 15px; border-radius: 10px;
+      font-size: 1rem; cursor: pointer; transition: 0.3s;
+    }
+    .host-selector:hover { background: #533483; }
+    .quick-download-section { margin: 20px 0; display: flex; justify-content: center; }
+    .download-option {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 20px; border-radius: 12px;
+      background: linear-gradient(90deg,#ff9966,#ff5e62);
+      cursor: pointer; transition: transform 0.3s ease;
+    }
+    .download-option:hover { transform: scale(1.05); }
+
+    /* 🔥 أزرار GLUE LIQUID 🔥 */
+    .main-buttons { margin: 25px 0; text-align: center; }
+    .button-row {
+      display: flex; justify-content: center;
+      gap: 20px; flex-wrap: wrap;
+    }
+    .action-btn {
+      position: relative; padding: 14px 35px;
+      font-size: 1rem; font-weight: bold;
+      border: none; border-radius: 50px;
+      color: #fff;
+      background: linear-gradient(90deg,#00c6ff,#0072ff);
+      cursor: pointer; overflow: hidden;
+      display: flex; align-items: center;
+      gap: 10px; z-index: 1;
+    }
+    .action-btn::before,
+    .action-btn::after {
+      content: ""; position: absolute; top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: radial-gradient(circle at 20% 35%, rgba(255,255,255,0.2) 25%, transparent 26%),
+                  radial-gradient(circle at 75% 44%, rgba(255,255,255,0.15) 20%, transparent 21%),
+                  radial-gradient(circle at 46% 52%, rgba(255,255,255,0.1) 20%, transparent 21%);
+      animation: liquidMove 6s linear infinite;
+      opacity: 0.6; z-index: 0;
+    }
+    .action-btn::after { animation-delay: -3s; }
+    @keyframes liquidMove {
+      0% { transform: translate(0,0) rotate(0deg);}
+      50% { transform: translate(10px,10px) rotate(180deg);}
+      100% { transform: translate(0,0) rotate(360deg);}
+    }
+    .action-btn:hover {
+      transform: scale(1.07);
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+    }
+    .action-btn:active { transform: scale(0.92); }
+    .action-btn span { position: relative; z-index: 2; }
+    .files-section {
+      margin: 20px 0; background: rgba(255,255,255,0.05);
+      padding: 15px; border-radius: 12px; min-height: 100px;
+    }
+    .game-item {
+      padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.1);
+      display: flex; justify-content: space-between;
+      align-items: center;
+    }
+    .game-item:last-child { border-bottom: none; }
+    .last-check { text-align: center; margin: 15px 0; font-size: 0.85rem; color: #bbb; }
+    .settings-section { text-align: center; margin-top: 15px; }
+    .reset-btn {
+      padding: 10px 20px; border: none; border-radius: 12px;
+      background: linear-gradient(90deg,#ff416c,#ff4b2b);
+      color: #fff; cursor: pointer; transition: 0.3s;
+    }
+    .reset-btn:hover { transform: scale(1.05); }
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <div class="folder-section">
+      <div class="folder-icon">
+        <div class="shield-icon">🛡️</div>
+      </div>
+      <h1 class="folder-title">Folder</h1>
+      <div class="folder-info">
+        <span class="online-status"><span id="downloadedCount">0</span>/<span id="totalCount">0</span> Online</span>
+        <span class="size-info"> | Size: <span id="totalSize">0 GB</span></span>
+      </div>
+    </div>
+
+    <div class="options-section">
+      <div class="dropdown-container">
+        <select class="host-selector">
+          <option value="usenet">usenet</option>
+          <option value="rapidgator">rapidgator</option>
+          <option value="uploaded">uploaded</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="quick-download-section">
+      <div class="download-option high-speed">
+        <span class="download-icon">⚡</span>
+        <span class="download-text">High-speed Download</span>
+      </div>
+    </div>
+
+    <div class="main-buttons">
+      <div class="button-row">
+        <button class="action-btn click-load">
+          <span class="btn-icon">🔗</span>
+          <span class="btn-text">Click'n Load</span>
+        </button>
+        <button class="action-btn dlc-download">
+          <span class="btn-icon">📥</span>
+          <span class="btn-text">dlc</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="files-section">
+      <div class="files-container" id="partsContainer"></div>
+    </div>
+
+    <div class="last-check">
+      <span>Last checked on: <span id="lastCheck">September 20, 2025 10:52am</span></span>
+    </div>
+
+    <div class="settings-section">
+      <button class="reset-btn" id="resetAll">إعادة تعيين الحالة</button>
+    </div>
+  </div>
+
+  <!-- ربط ملف الألعاب -->
+  <script src="script.js"></script>
+</body>
+</html>
