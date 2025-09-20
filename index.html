@@ -1,227 +1,145 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>تحميل العاب متعددة الملفات</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700&display=swap" rel="stylesheet">
-<style>
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body {
-    font-family: 'Cairo', sans-serif;
-    background: linear-gradient(135deg, #0a0a0a, #1a1a1a, #0a0a0a);
-    background-size: 300% 300%;
-    animation: gradientBG 8s ease infinite;
-    color: #e6ffe6;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    min-height:100vh;
-    padding:20px;
-  }
-  @keyframes gradientBG {
-    0% {background-position:0% 50%;}
-    50% {background-position:100% 50%;}
-    100% {background-position:0% 50%;}
-  }
-
-  .main-container {
-    width:100%;
-    max-width:900px;
-    background: rgba(0,0,0,0.8);
-    border-radius:20px;
-    padding:35px;
-    backdrop-filter: blur(12px);
-    box-shadow: 0 8px 40px rgba(0,0,0,0.9);
-    animation: fadeIn 1s ease;
-  }
-  @keyframes fadeIn { 
-    from {opacity:0; transform:translateY(40px);} 
-    to {opacity:1; transform:translateY(0);} 
-  }
-
-  .folder-section { text-align:center; margin-bottom:30px; }
-  .flag-icon {
-    font-size:3rem;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:10px;
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse { 
-    0%,100%{transform:scale(1);} 
-    50%{transform:scale(1.2);} 
-  }
-
-  .folder-title {
-    font-size:2.3rem;
-    margin:15px 0;
-    background: linear-gradient(90deg,#ff0000,#ffffff,#00ff6a);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  .folder-info {
-    font-size:1rem; 
-    color:#baffba; 
-    margin-top:5px;
-  }
-
-  .files-section { margin:25px 0; }
-  .game-item {
-    border: 1px solid rgba(0,255,100,0.25);
-    border-radius:15px;
-    padding:18px;
-    margin-bottom:15px;
-    display:flex; 
-    justify-content:space-between; 
-    align-items:center;
-    background: rgba(255,255,255,0.04);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    position: relative;
-    overflow:hidden;
-    animation: slideUp 0.7s ease forwards;
-    opacity:0;
-  }
-  @keyframes slideUp { 
-    from {transform: translateY(40px); opacity:0;}
-    to {transform: translateY(0); opacity:1;}
-  }
-  .game-item:hover { transform:scale(1.02); box-shadow:0 0 25px #00ff6a55; }
-
-  .game-info { display:flex; flex-direction:column; gap:5px; }
-  .game-name { font-weight:700; font-size:1.05rem; }
-  .game-size { font-size:0.9rem; color:#99ff99; }
-
-  .part-number {
-    position:absolute;
-    top:10px; left:10px;
-    background:#00ff6a;
-    color:#000;
-    font-size:0.85rem;
-    font-weight:bold;
-    border-radius:50%;
-    width:26px; height:26px;
-    display:flex; align-items:center; justify-content:center;
-    box-shadow:0 0 10px #00ff6a88;
-  }
-
-  .action-btn {
-    padding:13px 35px; 
-    font-size:1rem; 
-    font-weight:bold;
-    border:none; 
-    border-radius:40px; 
-    color:#000;
-    background: linear-gradient(90deg,#00ff6a,#00b347);
-    cursor:pointer; 
-    transition:0.25s;
-    box-shadow: 0 0 15px rgba(0,255,100,0.5);
-  }
-  .action-btn:hover { transform:scale(1.08); box-shadow:0 0 30px #00ff6a; }
-  .action-btn:disabled {opacity:0.8; cursor:not-allowed;}
-
-  .check-icon {
-    width:22px; height:22px;
-    stroke:#000;
-    stroke-width:3;
-    fill:none;
-    stroke-dasharray:50;
-    stroke-dashoffset:50;
-    animation: drawCheck 0.6s forwards;
-  }
-  @keyframes drawCheck { to{stroke-dashoffset:0;} }
-
-  .reset-all-btn {
-    display:block;
-    margin:30px auto 0 auto;
-    padding:14px 35px;
-    font-size:1rem;
-    font-weight:bold;
-    border:none;
-    border-radius:15px;
-    background: linear-gradient(90deg,#ff0000,#ffffff,#00ff6a);
-    color:#000;
-    cursor:pointer;
-    transition:0.3s;
-    box-shadow: 0 0 15px rgba(255,255,255,0.4);
-  }
-  .reset-all-btn:hover { transform:scale(1.08); box-shadow:0 0 35px #fff; }
-</style>
+  <meta charset="UTF-8">
+  <title>صفحة التحميلات</title>
+  <style>
+    * {margin:0;padding:0;box-sizing:border-box;font-family:"Cairo",sans-serif;}
+    body {
+      background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+      color:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center;
+      min-height:100vh; padding:20px; transition:background 0.3s, color 0.3s;
+    }
+    h1 {margin-bottom:15px;font-size:26px;}
+    .status {margin-bottom:20px;font-size:18px;}
+    .downloads {display:grid;gap:15px;width:100%;max-width:600px;}
+    .card {
+      background:#0f3460; padding:15px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.4);
+      display:flex; justify-content:space-between; align-items:center; transition:transform 0.2s;
+    }
+    .card:hover {transform:scale(1.03);}
+    button {
+      background:#e94560; color:#fff; border:none; padding:8px 14px; border-radius:8px; cursor:pointer;
+      display:flex; align-items:center; gap:6px; font-size:14px; transition:background 0.3s, transform 0.3s;
+      position:relative; overflow:hidden;
+    }
+    button:hover {background:#ff2e63;}
+    button:disabled {cursor:default;}
+    .checkmark {
+      width:18px; height:18px; border-radius:50%; border:2px solid #28a745;
+      display:flex; align-items:center; justify-content:center; color:#28a745;
+      font-size:14px; opacity:0; transform:scale(0); transition:all 0.4s ease;
+    }
+    .success .checkmark {opacity:1; transform:scale(1.3) rotate(360deg);}
+    .progress-container {margin:20px 0;width:100%;max-width:600px;}
+    .progress-bar-bg {background:#ddd;border-radius:20px;overflow:hidden;height:20px;}
+    .progress-bar {background:#28a745;height:100%;width:0%;transition:width 0.4s;}
+    .controls {margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;}
+    .dark-mode {position:fixed;top:15px;left:15px;}
+    .last-download {margin-top:10px;font-size:14px;color:#ccc;}
+  </style>
 </head>
 <body>
-<div class="main-container">
-  <div class="folder-section">
-    <div class="flag-icon"><span>4GAMER</span></div>
-    <h1 class="folder-title">Minecraft</h1>
-    <div class="folder-info">
-      <span class="downloads-status">التحميلات: <span id="downloadedCount">0</span>/<span id="totalCount">0</span></span>
-      <span class="size-info"> | الحجم الكلي: <span id="totalSize">21 GB</span></span>
-    </div>
+  <button class="dark-mode" onclick="toggleMode()">🌙 / ☀️</button>
+  <h1>مدير التحميلات</h1>
+  <div class="status">
+    تم تحميل <span id="downloadedCount">0</span>/<span id="totalCount">0</span> ملفات
   </div>
-
-  <div class="files-section">
-    <div class="files-container" id="partsContainer"></div>
+  <div class="progress-container">
+    <div class="progress-bar-bg"><div id="progressBar" class="progress-bar"></div></div>
   </div>
+  <div class="downloads" id="downloadsList"></div>
+  <div class="controls">
+    <button onclick="downloadAll()">⬇️ تحميل الكل</button>
+    <button onclick="resetDownloads()">🔄 إعادة تعيين</button>
+  </div>
+  <div class="last-download" id="lastDownload">آخر تحميل: لا يوجد</div>
 
-  <button class="reset-all-btn" id="resetAllBtn">إعادة كل الأزرار</button>
-</div>
+  <script>
+    const partsData = [
+      {id:'part1', name:'ملف 1 - 2GB', url:'https://example.com/file1.zip'},
+      {id:'part2', name:'ملف 2 - 3GB', url:'https://example.com/file2.zip'},
+      {id:'part3', name:'ملف 3 - 1.5GB', url:'https://example.com/file3.zip'}
+    ];
 
-<script>
-const partsData = [
-  {id:'part1',name:'ملف اللعبة - جزء 1',size:'9.90 GB',url:'https://example.com/file1.zip'},
-  {id:'part2',name:'ملف اللعبة - جزء 2',size:'9.90 GB',url:'https://example.com/file2.zip'},
-  {id:'part3',name:'ملف اللعبة - جزء 3',size:'415.82 MB',url:'https://example.com/file3.zip'},
-  {id:'part4',name:'ملف اللعبة - جزء 4',size:'8.50 GB',url:'https://example.com/file4.zip'},
-  {id:'part5',name:'ملف اللعبة - جزء 5',size:'7.20 GB',url:'https://example.com/file5.zip'},
-];
+    let downloadedCount = parseInt(localStorage.getItem("downloadedCount")) || 0;
+    let lastDownload = localStorage.getItem("lastDownload") || "لا يوجد";
 
-const container = document.getElementById("partsContainer");
-const allButtons = [];
-let downloadedCount = 0;
+    const downloadsList = document.getElementById("downloadsList");
+    const totalCountSpan = document.getElementById("totalCount");
+    const downloadedCountSpan = document.getElementById("downloadedCount");
+    const progressBar = document.getElementById("progressBar");
+    const lastDownloadDiv = document.getElementById("lastDownload");
 
-partsData.forEach((part, i) => {
-    const partDiv = document.createElement("div");
-    partDiv.classList.add("game-item");
-    partDiv.style.animationDelay = `${i*0.15}s`;
+    function renderParts(){
+      downloadsList.innerHTML="";
+      partsData.forEach((part,i)=>{
+        const card=document.createElement("div");
+        card.className="card";
+        const span=document.createElement("span");
+        span.textContent=part.name;
+        const btn=document.createElement("button");
+        btn.innerHTML="تحميل";
+        btn.onclick=()=>downloadFile(btn,part.url);
+        const check=document.createElement("div");
+        check.className="checkmark";
+        check.innerHTML="✔";
+        btn.appendChild(check);
+        card.appendChild(span);
+        card.appendChild(btn);
+        downloadsList.appendChild(card);
+      });
+      totalCountSpan.textContent=partsData.length;
+      downloadedCountSpan.textContent=downloadedCount;
+      lastDownloadDiv.textContent="آخر تحميل: "+lastDownload;
+      updateProgress();
+    }
 
-    partDiv.innerHTML = `
-      <div class="part-number">${i+1}</div>
-      <div class="game-info">
-        <span class="game-name">${part.name}</span>
-        <span class="game-size">${part.size}</span>
-      </div>
-      <button class="action-btn">تحميل</button>
-    `;
-    container.appendChild(partDiv);
+    function downloadFile(button,url){
+      window.open(url,'_blank');
+      button.classList.add("success");
+      button.disabled=true;
+      downloadedCount++;
+      localStorage.setItem("downloadedCount",downloadedCount);
+      localStorage.setItem("lastDownload",new Date().toLocaleTimeString());
+      lastDownload=new Date().toLocaleTimeString();
+      updateStatus();
+    }
 
-    const downloadBtn = partDiv.querySelector(".action-btn");
-    allButtons.push(downloadBtn);
+    function updateStatus(){
+      downloadedCountSpan.textContent=downloadedCount;
+      lastDownloadDiv.textContent="آخر تحميل: "+lastDownload;
+      updateProgress();
+    }
 
-    downloadBtn.addEventListener("click", () => {
-        window.open(part.url, "_blank");
-        downloadBtn.innerHTML = `
-          <svg class="check-icon" viewBox="0 0 24 24">
-            <polyline points="20 6 9 17 4 12"></polyline>
-          </svg>
-        `;
-        downloadBtn.disabled = true;
-        downloadedCount++;
-        document.getElementById("downloadedCount").textContent = downloadedCount;
-    });
-});
+    function updateProgress(){
+      let percent=(downloadedCount/partsData.length)*100;
+      progressBar.style.width=percent+"%";
+    }
 
-document.getElementById("resetAllBtn").addEventListener("click", () => {
-    allButtons.forEach(btn => {
-        btn.textContent = "تحميل";
-        btn.disabled = false;
-    });
-    downloadedCount = 0;
-    document.getElementById("downloadedCount").textContent = downloadedCount;
-});
+    function downloadAll(){
+      document.querySelectorAll(".downloads button:not(:disabled)").forEach(btn=>btn.click());
+    }
 
-// init total count
-document.getElementById("totalCount").textContent = partsData.length;
-</script>
+    function resetDownloads(){
+      downloadedCount=0;
+      localStorage.setItem("downloadedCount",0);
+      localStorage.setItem("lastDownload","لا يوجد");
+      lastDownload="لا يوجد";
+      renderParts();
+    }
+
+    function toggleMode(){
+      if(document.body.style.background.includes("fff")){
+        document.body.style.background="linear-gradient(135deg,#1a1a2e,#16213e,#0f3460)";
+        document.body.style.color="#fff";
+      } else {
+        document.body.style.background="#fff";
+        document.body.style.color="#000";
+      }
+    }
+
+    renderParts();
+  </script>
 </body>
 </html>
