@@ -61,15 +61,40 @@
   </div>
 
   <script>
+    const BIN_URL = "https://json.extendsclass.com/bin/374fbe8426c4";
+    const SECURITY_KEY = ""; // إذا ضفت Security Key من الموقع حطه هنا
     const encodedPassword = "YWhxaWFid28="; // ahqiabwo
+
     let partsData = [];
 
+    // تحميل البيانات من JSON Bin
     async function loadParts() {
-      const res = await fetch("parts.json");
-      partsData = await res.json();
-      renderParts();
+      try {
+        const res = await fetch(BIN_URL);
+        partsData = await res.json();
+        renderParts();
+      } catch (err) {
+        console.error("خطأ بجلب البيانات:", err);
+      }
     }
 
+    // حفظ التغييرات في JSON Bin
+    async function saveParts() {
+      try {
+        await fetch(BIN_URL, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "Security-key": SECURITY_KEY
+          },
+          body: JSON.stringify(partsData)
+        });
+      } catch (err) {
+        console.error("خطأ بالحفظ:", err);
+      }
+    }
+
+    // عرض البارتات
     function renderParts() {
       const container = document.getElementById("partsContainer");
       container.innerHTML = "";
@@ -86,7 +111,10 @@
       renderAdminParts();
     }
 
-    function showLogin() { document.getElementById("passwordPrompt").style.display = "block"; }
+    function showLogin() {
+      document.getElementById("passwordPrompt").style.display = "block";
+    }
+
     function checkPassword() {
       const input = document.getElementById("adminPassword").value;
       if (input === atob(encodedPassword)) {
@@ -95,13 +123,13 @@
       } else alert("❌ كلمة المرور خاطئة");
     }
 
-    function addPart() {
+    async function addPart() {
       const name = document.getElementById("partName").value;
       const size = document.getElementById("partSize").value;
       const url = document.getElementById("partURL").value;
       if (!name || !size || !url) return alert("⚠️ أدخل كل الحقول");
       partsData.push({ id: "part" + Date.now(), name, size, url });
-      saveParts();
+      await saveParts();
       renderParts();
     }
 
@@ -117,34 +145,29 @@
       });
     }
 
-    function editPart(index) {
+    async function editPart(index) {
       const p = partsData[index];
       const newName = prompt("اسم البارت:", p.name) || p.name;
       const newSize = prompt("الحجم:", p.size) || p.size;
       const newUrl = prompt("الرابط:", p.url) || p.url;
       partsData[index] = {...p, name:newName, size:newSize, url:newUrl};
-      saveParts();
+      await saveParts();
       renderParts();
     }
 
-    function deletePart(index) {
+    async function deletePart(index) {
       if (confirm("هل تريد حذف هذا البارت؟")) {
         partsData.splice(index,1);
-        saveParts();
+        await saveParts();
         renderParts();
       }
     }
 
-    function saveParts() {
-      // ملاحظة: هذا لن يكتب في parts.json من المتصفح
-      // تحتاج سيرفر (PHP أو Node) لتحديث الملف
-      localStorage.setItem("partsData", JSON.stringify(partsData));
-    }
-
-    document.getElementById("resetAllBtn").onclick = () => {
+    document.getElementById("resetAllBtn").onclick = async () => {
       if (confirm("هل تريد إعادة تعيين جميع البارتات؟")) {
-        localStorage.clear();
-        loadParts();
+        partsData = [];
+        await saveParts();
+        renderParts();
       }
     };
 
