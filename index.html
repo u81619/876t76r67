@@ -6,394 +6,6 @@
   <title>Parts Downloader Hub</title>
   <style>
     body {
-/* General Styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, rgb(0, 18, 10) 0%, rgb(0, 8, 9) 100%); /* Updated gradient from 4GAMER palette */
-    min-height: 100vh;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: #f0f0f0; /* Light text for dark background */
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    width: 100%;
-    padding: 0 15px;
-}
-
-/* Header */
-.main-header {
-    text-align: center;
-    margin-bottom: 40px;
-    color: white;
-}
-
-.main-header h1 {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-}
-
-.overall-progress {
-    background: rgba(255,255,255,0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 15px;
-    padding: 20px;
-    max-width: 400px;
-    margin: 0 auto;
-}
-
-.progress-text {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    font-weight: bold;
-}
-
-.progress-bar {
-    height: 8px;
-    background: rgba(255,255,255,0.2);
-    border-radius: 4px;
-    overflow: hidden;
-}
-
-.progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, rgb(22, 185, 31), rgb(51, 224, 52)); /* Updated gradient from 4GAMER palette */
-    width: 0%;
-    transition: width 0.5s ease;
-    border-radius: 4px;
-}
-
-/* File Info Section */
-.file-info-section {
-    background: rgba(255,255,255,0.08);
-    backdrop-filter: blur(5px);
-    border-radius: 15px;
-    padding: 20px;
-    margin: 30px auto;
-    max-width: 600px;
-    text-align: center;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.file-name-display,
-.total-size-display {
-    font-size: 1.1rem;
-    font-weight: 500;
-    color: #eee;
-}
-
-.file-name-display span:first-child,
-.total-size-display span:first-child {
-    color: #bbb;
-    margin-left: 5px;
-}
-
-/* Parts Grid */
-.parts-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Smaller cards */
-    gap: 15px; /* Reduced gap */
-    padding: 20px 0;
-}
-
-.part-card {
-    background: rgba(255,255,255,0.05); /* Darker, more transparent cards */
-    border-radius: 15px; /* Slightly smaller border-radius */
-    padding: 20px; /* Reduced padding */
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2); /* Adjusted shadow */
-    backdrop-filter: blur(5px); /* Reduced blur */
-    border: 1px solid rgba(255,255,255,0.1); /* Lighter border */
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
-    color: #f0f0f0; /* Light text */
-}
-
-.part-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-    transition: left 0.6s;
-}
-
-.part-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-}
-
-.part-card:hover::before {
-    left: 100%;
-}
-
-.part-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px; /* Reduced margin */
-}
-
-.part-number {
-    width: 40px; /* Smaller number circle */
-    height: 40px;
-    border-radius: 50%;
-    background: rgb(0, 107, 15); /* From 4GAMER palette */
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 1rem; /* Smaller font size */
-    margin-left: 10px; /* Reduced margin */
-    flex-shrink: 0;
-}
-
-.part-info h3 {
-    color: white;
-    font-size: 1.1rem; /* Smaller font size */
-    margin-bottom: 3px;
-}
-
-.part-size {
-    color: #bbb;
-    font-size: 0.8rem;
-}
-
-.download-section {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.download-btn {
-    width: 45px; /* Smaller button */
-    height: 45px;
-    border: none;
-    border-radius: 50%;
-    background: rgb(22, 185, 31); /* From 4GAMER palette */
-    color: white;
-    font-size: 1.2rem; /* Smaller icon */
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-bottom: 10px; /* Reduced margin */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-.download-btn:hover {
-    transform: scale(1.1);
-    box-shadow: 0 3px 10px rgba(51, 224, 52, 0.4);
-}
-
-.download-btn:active {
-    transform: scale(0.95);
-}
-
-.status-text {
-    color: #bbb;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    font-size: 0.9rem;
-}
-
-/* Downloaded State */
-.part-card.downloaded {
-    background: rgba(51, 224, 52, 0.1); /* Lighter green background */
-    border-color: rgba(51, 224, 52, 0.3);
-}
-
-.part-card.downloaded .download-btn {
-    background: rgb(51, 224, 52); /* Solid green */
-}
-
-.part-card.downloaded .status-text {
-    color: rgb(51, 224, 52);
-    font-weight: bold;
-}
-
-.part-card.downloaded .part-number {
-    background: rgb(51, 224, 52);
-}
-
-/* Animation */
-@keyframes successPulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-}
-
-.part-card.just-downloaded {
-    animation: successPulse 0.6s ease;
-}
-
-/* Actions Section (Reset Button) */
-.actions {
-    text-align: center;
-    margin-top: 30px;
-    margin-bottom: 20px;
-}
-
-.reset-btn {
-    background: linear-gradient(135deg, #ff6b6b, #ee5253);
-    color: white;
-    border: none;
-    border-radius: 8px; /* Slightly smaller border-radius */
-    padding: 10px 20px; /* Reduced padding */
-    font-size: 1rem; /* Smaller font size */
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 3px 10px rgba(255, 107, 107, 0.3);
-}
-
-.reset-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
-}
-
-.reset-btn:active {
-    transform: translateY(0);
-    box-shadow: 0 1px 5px rgba(255, 107, 107, 0.2);
-}
-
-/* Footer */
-.footer {
-    margin-top: 40px;
-    text-align: center;
-    font-size: 0.85rem;
-    color: #aaa;
-}
-
-.footer a {
-    color: #eee;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.footer a:hover {
-    text-decoration: underline;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .parts-grid {
-        grid-template-columns: 1fr;
-        gap: 10px;
-    }
-    
-    .main-header h1 {
-        font-size: 2rem;
-    }
-    
-    .part-card {
-        padding: 15px;
-    }
-
-    .part-number {
-        width: 35px;
-        height: 35px;
-        font-size: 0.9rem;
-    }
-
-    .part-info h3 {
-        font-size: 1rem;
-    }
-
-    .download-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 1rem;
-    }
-
-    .reset-btn {
-        padding: 8px 15px;
-        font-size: 0.9rem;
-    }
-
-    .file-info-section {
-        padding: 15px;
-        font-size: 1rem;
-    }
-}
-
-@media (max-width: 480px) {
-    body {
-        padding: 10px;
-    }
-
-    .main-header h1 {
-        font-size: 1.8rem;
-    }
-
-    .overall-progress {
-        padding: 15px;
-    }
-
-    .part-card {
-        padding: 10px;
-    }
-
-    .part-header {
-        margin-bottom: 10px;
-    }
-
-    .part-number {
-        width: 30px;
-        height: 30px;
-        font-size: 0.8rem;
-        margin-left: 8px;
-    }
-
-    .part-info h3 {
-        font-size: 0.9rem;
-    }
-
-    .part-size {
-        font-size: 0.75rem;
-    }
-
-    .download-btn {
-        width: 35px;
-        height: 35px;
-        font-size: 0.9rem;
-    }
-
-    .status-text {
-        font-size: 0.8rem;
-    }
-
-    .reset-btn {
-        padding: 7px 12px;
-        font-size: 0.8rem;
-    }
-
-    .file-info-section {
-        padding: 10px;
-        font-size: 0.9rem;
-    }
-}
-
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: linear-gradient(135deg, rgb(0, 18, 10) 0%, rgb(0, 8, 9) 100%);
       min-height: 100vh;
@@ -401,57 +13,36 @@ body {
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
       color: #f0f0f0;
     }
-    .admin-btn {
-      background: #ffc107;
-      color: black;
-      border: none;
-      border-radius: 8px;
-      padding: 10px 20px;
-      cursor: pointer;
-      margin-bottom: 15px;
-    }
-    #passwordPrompt, #adminPanel {
-      display: none;
-      margin: 20px auto;
-      background: rgba(255,255,255,0.08);
-      padding: 15px;
-      border-radius: 12px;
-      max-width: 500px;
-      text-align: center;
-    }
-    input {
-      padding: 6px;
-      margin: 5px 0;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      width: 90%;
-    }
-    .add-btn { background: #28a745; color: #fff; padding: 8px 14px; border-radius: 6px; border:none; cursor: pointer; }
+    .container { max-width: 1000px; width: 100%; }
+    .main-header { text-align: center; margin-bottom: 20px; }
+    .parts-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(250px,1fr)); gap: 15px; }
+    .part-card { background: rgba(255,255,255,0.08); padding: 15px; border-radius: 12px; }
+    .download-btn { background: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; }
+    .reset-btn { background: #ff5252; color: #fff; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
+    .admin-btn { background: #ffc107; color: black; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
+    .actions { display: flex; gap: 10px; justify-content: center; margin: 20px 0; }
+    #passwordPrompt,#adminPanel { display: none; margin: 15px auto; background: rgba(255,255,255,0.08); padding: 15px; border-radius: 12px; }
+    input { padding: 6px; margin: 5px 0; border-radius: 6px; border: 1px solid #ccc; width: 90%; }
+    .add-btn { background: #28a745; color:#fff; padding: 8px 14px; border:none; border-radius:6px; cursor: pointer; }
     .edit-btn { background: #ffc107; padding: 5px 10px; border:none; border-radius:6px; cursor: pointer; }
     .delete-btn { background: #dc3545; color:#fff; padding: 5px 10px; border:none; border-radius:6px; cursor: pointer; }
-    .overall-progress { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 15px; padding: 20px; max-width: 400px; margin: 0 auto 20px; }
-    .progress-text { display: flex; justify-content: space-between; margin-bottom: 10px; font-weight: bold; }
-    .progress-bar { height: 8px; background: rgba(255,255,255,0.2); border-radius: 4px; overflow: hidden; }
-    .progress-fill { height: 100%; background: linear-gradient(90deg, rgb(22, 185, 31), rgb(51, 224, 52)); width: 0%; transition: width 0.5s ease; border-radius: 4px; }
-    .parts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; padding: 20px 0; }
-    .part-card { background: rgba(255,255,255,0.05); border-radius: 15px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s; position: relative; overflow: hidden; color: #f0f0f0; }
-    .part-card.downloaded { background: rgba(51, 224, 52, 0.1); border-color: rgba(51, 224, 52, 0.3); }
-    .part-card.downloaded .download-btn { background: rgb(51, 224, 52); }
-    .download-btn { width: 45px; height: 45px; border: none; border-radius: 50%; background: rgb(22, 185, 31); color: white; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
-    .status-text { color: #bbb; font-weight: 500; font-size: 0.9rem; }
-    .reset-btn { background: linear-gradient(135deg, #ff6b6b, #ee5253); color: white; border: none; border-radius: 8px; padding: 10px 20px; font-size: 1rem; cursor: pointer; margin-top: 20px; }
-    .file-info-section { background: rgba(255,255,255,0.08); backdrop-filter: blur(5px); border-radius: 15px; padding: 20px; margin: 20px auto; max-width: 600px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-    .file-name-display span:first-child, .total-size-display span:first-child { color: #bbb; margin-left: 5px; }
   </style>
 </head>
 <body>
   <div class="container">
     <header class="main-header">
       <h1>🗂️ مركز تحميل البارتات</h1>
-      <button class="admin-btn" onclick="showLogin()">🔑 دخول الأدمن</button>
+    </header>
+
+    <main>
+      <div class="parts-grid" id="partsContainer"></div>
+
+      <div class="actions">
+        <button id="resetAllBtn" class="reset-btn">إعادة تعيين الكل</button>
+        <button class="admin-btn" onclick="showLogin()">🔑 دخول الأدمن</button>
+      </div>
 
       <div id="passwordPrompt">
         <input type="password" id="adminPassword" placeholder="ادخل كلمة المرور">
@@ -466,123 +57,33 @@ body {
         <button class="add-btn" onclick="addPart()">➕ إضافة بارت</button>
         <div id="adminPartsList"></div>
       </div>
-
-      <div class="overall-progress">
-        <div class="progress-text">
-          <span>التقدم: <span id="completed">0</span>/<span id="total">0</span></span>
-          <span id="percentage">0%</span>
-        </div>
-        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-      </div>
-    </header>
-
-    <main>
-      <div class="file-info-section">
-        <div class="file-name-display"><span>اسم الملف:</span> <span id="fullFileName"></span></div>
-        <div class="total-size-display"><span>الحجم الكلي:</span> <span id="totalFileSize"></span></div>
-      </div>
-
-      <div class="parts-grid" id="partsContainer"></div>
-      <button id="resetAllBtn" class="reset-btn">إعادة تعيين الكل</button>
     </main>
-
-    <footer class="footer">
-      &copy; 2025 <a href="https://t.me/C9_9M" target="_blank">4GAMER</a>. جميع الحقوق محفوظة.
-    </footer>
   </div>
 
   <script>
     const encodedPassword = "YWhxaWFid28="; // ahqiabwo
-    let partsData = JSON.parse(localStorage.getItem("partsData")) || [
-      { id: 'part1', name: 'الجزء الأول', size: '9.77 GB', url: 'https://akirabox.to/qLQ36pD9wG19/file' },
-      { id: 'part2', name: 'الجزء الثاني', size: '9.77 GB', url: 'https://akirabox.to/0rpmv7bkw3Rg/file' }
-    ];
+    let partsData = [];
 
-    class PartsDownloader {
-      constructor() {
-        this.partsContainer = document.getElementById('partsContainer');
-        this.completedSpan = document.getElementById('completed');
-        this.totalSpan = document.getElementById('total');
-        this.percentageSpan = document.getElementById('percentage');
-        this.progressFill = document.getElementById('progressFill');
-        this.fullFileNameDisplay = document.getElementById('fullFileName');
-        this.totalFileSizeDisplay = document.getElementById('totalFileSize');
-        this.resetButton = document.getElementById('resetAllBtn');
-        this.init();
-      }
+    async function loadParts() {
+      const res = await fetch("parts.json");
+      partsData = await res.json();
+      renderParts();
+    }
 
-      init() {
-        this.renderParts();
-        this.updateProgress();
-        this.displayFileInfo();
-        this.resetButton.addEventListener('click', () => this.resetAllParts());
-      }
-
-      renderParts() {
-        this.partsContainer.innerHTML = '';
-        partsData.forEach((part, index) => {
-          const card = this.createPartCard(part, index + 1);
-          this.partsContainer.appendChild(card);
-        });
-        this.totalSpan.textContent = partsData.length;
-        localStorage.setItem("partsData", JSON.stringify(partsData));
-      }
-
-      createPartCard(part, number) {
-        const card = document.createElement('div');
-        card.className = 'part-card';
-        card.dataset.partId = part.id;
-        const isDownloaded = localStorage.getItem(part.id) === 'downloaded';
-        if (isDownloaded) card.classList.add('downloaded');
+    function renderParts() {
+      const container = document.getElementById("partsContainer");
+      container.innerHTML = "";
+      partsData.forEach((part, i) => {
+        const card = document.createElement("div");
+        card.className = "part-card";
         card.innerHTML = `
-          <div class="part-header">
-            <div class="part-number">${number.toString().padStart(2, '0')}</div>
-            <div class="part-info"><h3>${part.name}</h3><div class="part-size">${part.size}</div></div>
-          </div>
-          <div class="download-section">
-            <button class="download-btn" onclick="partsDownloader.downloadPart('${part.url}', '${part.id}')">${isDownloaded ? '✅' : '⬇️'}</button>
-            <div class="status-text">${isDownloaded ? 'تم التحميل' : 'جاهز للتحميل'}</div>
-          </div>`;
-        return card;
-      }
-
-      downloadPart(url, partId) {
-        const card = document.querySelector(`[data-part-id="${partId}"]`);
-        card.classList.add('downloaded');
-        card.querySelector('.download-btn').innerHTML = '✅';
-        card.querySelector('.status-text').textContent = 'تم التحميل';
-        localStorage.setItem(partId, 'downloaded');
-        this.updateProgress();
-        window.open(url, '_blank');
-      }
-
-      updateProgress() {
-        const completed = partsData.filter(part => localStorage.getItem(part.id) === 'downloaded').length;
-        const total = partsData.length;
-        const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
-        this.completedSpan.textContent = completed;
-        this.percentageSpan.textContent = `${percentage}%`;
-        this.progressFill.style.width = `${percentage}%`;
-      }
-
-      displayFileInfo() {
-        this.fullFileNameDisplay.textContent = 'Ghost of Tsushima Game.pkg';
-        let totalSizeGB = 0;
-        partsData.forEach(part => {
-          const sizeValue = parseFloat(part.size.replace(' GB', ''));
-          if (!isNaN(sizeValue)) totalSizeGB += sizeValue;
-        });
-        this.totalFileSizeDisplay.textContent = `${totalSizeGB.toFixed(2)} GB`;
-      }
-
-      resetAllParts() {
-        if (confirm('هل أنت متأكد أنك تريد إعادة تعيين حالة جميع البارتات؟')) {
-          partsData.forEach(part => localStorage.removeItem(part.id));
-          this.renderParts();
-          this.updateProgress();
-          alert('تمت إعادة تعيين جميع البارتات!');
-        }
-      }
+          <h3>${part.name}</h3>
+          <p>الحجم: ${part.size}</p>
+          <button class="download-btn" onclick="window.open('${part.url}','_blank')">⬇️ تحميل</button>
+        `;
+        container.appendChild(card);
+      });
+      renderAdminParts();
     }
 
     function showLogin() { document.getElementById("passwordPrompt").style.display = "block"; }
@@ -591,54 +92,63 @@ body {
       if (input === atob(encodedPassword)) {
         document.getElementById("adminPanel").style.display = "block";
         document.getElementById("passwordPrompt").style.display = "none";
-        renderAdminParts();
-      } else { alert("❌ كلمة المرور خاطئة"); }
+      } else alert("❌ كلمة المرور خاطئة");
     }
+
     function addPart() {
       const name = document.getElementById("partName").value;
       const size = document.getElementById("partSize").value;
       const url = document.getElementById("partURL").value;
       if (!name || !size || !url) return alert("⚠️ أدخل كل الحقول");
       partsData.push({ id: "part" + Date.now(), name, size, url });
-      localStorage.setItem("partsData", JSON.stringify(partsData));
-      partsDownloader.renderParts();
-      renderAdminParts();
-      document.getElementById("partName").value = "";
-      document.getElementById("partSize").value = "";
-      document.getElementById("partURL").value = "";
+      saveParts();
+      renderParts();
     }
+
     function renderAdminParts() {
       const adminList = document.getElementById("adminPartsList");
       adminList.innerHTML = "";
-      partsData.forEach((p, i) => {
+      partsData.forEach((p,i)=>{
         const div = document.createElement("div");
-        div.innerHTML = `<b>${p.name}</b> - ${p.size} 
+        div.innerHTML = `<b>${p.name}</b> - ${p.size}
           <button class="edit-btn" onclick="editPart(${i})">تعديل</button>
           <button class="delete-btn" onclick="deletePart(${i})">حذف</button>`;
         adminList.appendChild(div);
       });
     }
+
     function editPart(index) {
       const p = partsData[index];
       const newName = prompt("اسم البارت:", p.name) || p.name;
       const newSize = prompt("الحجم:", p.size) || p.size;
       const newUrl = prompt("الرابط:", p.url) || p.url;
-      partsData[index] = { ...p, name: newName, size: newSize, url: newUrl };
-      localStorage.setItem("partsData", JSON.stringify(partsData));
-      partsDownloader.renderParts();
-      renderAdminParts();
+      partsData[index] = {...p, name:newName, size:newSize, url:newUrl};
+      saveParts();
+      renderParts();
     }
+
     function deletePart(index) {
       if (confirm("هل تريد حذف هذا البارت؟")) {
-        partsData.splice(index, 1);
-        localStorage.setItem("partsData", JSON.stringify(partsData));
-        partsDownloader.renderParts();
-        renderAdminParts();
+        partsData.splice(index,1);
+        saveParts();
+        renderParts();
       }
     }
 
-    let partsDownloader;
-    window.addEventListener('DOMContentLoaded', () => { partsDownloader = new PartsDownloader(); });
+    function saveParts() {
+      // ملاحظة: هذا لن يكتب في parts.json من المتصفح
+      // تحتاج سيرفر (PHP أو Node) لتحديث الملف
+      localStorage.setItem("partsData", JSON.stringify(partsData));
+    }
+
+    document.getElementById("resetAllBtn").onclick = () => {
+      if (confirm("هل تريد إعادة تعيين جميع البارتات؟")) {
+        localStorage.clear();
+        loadParts();
+      }
+    };
+
+    loadParts();
   </script>
 </body>
 </html>
